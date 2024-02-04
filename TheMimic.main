@@ -48,7 +48,7 @@ do
                     {
                         Title = "Confirm",
                         Callback = function()
-                            game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new()
+                            game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(83.10047912597656, -50.77107620239258, -1413.6700439453125)
                         end
                     },
                     {
