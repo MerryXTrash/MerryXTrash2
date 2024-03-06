@@ -5,7 +5,7 @@ MakeWindow({
     Animation = "By : MerrySubset"
   },
   Key = {
-    KeySystem = true,
+    KeySystem = false,
     Title = "Exility HUB",
     Description = "",
     KeyLink = "https://sub4unlock.io/1kPsC",
