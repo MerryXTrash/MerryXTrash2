@@ -40,7 +40,13 @@ local section = AddSection(Book 1, {"Chapter 1"})
 AddButton(Book 1, {
   Name = "Part 1",
   Callback = function()
-    
+    game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(3507.028564453125, 43.13663864135742, -1541.9735107421875)
+  end
+})
+AddButton(Book 1, {
+  Name = "Part 2",
+  Callback = function()
+    game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1272.7239990234375, 200.04153442382812, -2537.25)
   end
 })
 
