@@ -18,3 +18,21 @@ MakeWindow({
     }
   }
 })
+
+MinimizeButton({
+  Image = "",
+  Size = {40, 40},
+  Color = Color3.fromRGB(10, 10, 10),
+  Corner = true,
+  Stroke = false,
+  StrokeColor = Color3.fromRGB(255, 0, 0)
+})
+
+--[[
+  Image = "" <string> imagem do botão
+  Size = {40, 40} <table> tamanho do botão
+  Color = Color3.fromRGB(10, 10, 10) <Color3>  Cor do fundo do botäo
+  Corner = true -- <boolean> Adicina um UICorner
+  Stroke = false <boolean> Adiciona um UIStroke
+  StrokeColor = Color3.fromRGB(255, 0, 0) <Color3> Cor do UIStroke
+]]
