@@ -8,8 +8,8 @@ MakeWindow({
     KeySystem = true,
     Title = "Exility HUB",
     Description = "",
-    KeyLink = "ddd",
-    Keys = {"1234"},
+    KeyLink = "https://sub4unlock.io/1kPsC",
+    Keys = {"Exility-QT2M-UVA1-2550"},
     Notifi = {
       Notifications = true,
       CorrectKey = "Key is Correct wait(..)",
