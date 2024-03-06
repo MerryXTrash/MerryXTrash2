@@ -29,22 +29,18 @@ MinimizeButton({
 })
 
 
-local Main = MakeTab({Name = "Main"})
+local Main = MakeTab({Name = "Book 1"})
 MakeNotifi({
   Title = "Exility HUB",
   Text = "Test",
   Time = 5
 })
 
-local section = AddSection(Main, {"Game"})
-local Toggle = AddToggle(Main, {
-  Name = "Auto Start",
-  Default = true,
-  Callback = function(Value)
-    _G.start = true
-while _G.start do
-wait(1)
-workspace:WaitForChild("Really redZone"):WaitForChild("VoteLaunchRE"):FireServer()
-end
+local section = AddSection(Book 1, {"Chapter 1"})
+AddButton(Book 1, {
+  Name = "Part 1",
+  Callback = function()
+    
   end
 })
+
