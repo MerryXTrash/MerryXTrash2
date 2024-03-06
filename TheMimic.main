@@ -30,6 +30,12 @@ MinimizeButton({
 
 
 local Main = MakeTab({Name = "Main"})
+MakeNotifi({
+  Title = "Exility HUB",
+  Text = "Test",
+  Time = 5
+})
+
 local section = AddSection(Main, {"Game"})
 local Toggle = AddToggle(Main, {
   Name = "Auto Start",
