@@ -28,9 +28,8 @@ MinimizeButton({
   StrokeColor = Color3.fromRGB(255, 0, 0)
 })
 
---------------
-local Main = MakeTab({Name = "Main"})
 
+local Main = MakeTab({Name = "Main"})
 local section = AddSection(Main, {"Game"})
 local Toggle = AddToggle(Main, {
   Name = "Auto Start",
