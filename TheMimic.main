@@ -28,11 +28,18 @@ MinimizeButton({
   StrokeColor = Color3.fromRGB(255, 0, 0)
 })
 
---[[
-  Image = "" <string> imagem do botão
-  Size = {40, 40} <table> tamanho do botão
-  Color = Color3.fromRGB(10, 10, 10) <Color3>  Cor do fundo do botäo
-  Corner = true -- <boolean> Adicina um UICorner
-  Stroke = false <boolean> Adiciona um UIStroke
-  StrokeColor = Color3.fromRGB(255, 0, 0) <Color3> Cor do UIStroke
-]]
+--------------
+local Main = MakeTab({Name = "Main"})
+
+local section = AddSection(Main, {"Game"})
+local Toggle = AddToggle(Main, {
+  Name = "Auto Start",
+  Default = false,
+  Callback = function(Value)
+    _G.start = true
+while _G.start do
+wait(1)
+workspace:WaitForChild("Really redZone"):WaitForChild("VoteLaunchRE"):FireServer()
+end
+  end
+})
