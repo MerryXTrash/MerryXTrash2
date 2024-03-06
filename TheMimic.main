@@ -34,7 +34,7 @@ local Main = MakeTab({Name = "Main"})
 local section = AddSection(Main, {"Game"})
 local Toggle = AddToggle(Main, {
   Name = "Auto Start",
-  Default = false,
+  Default = true,
   Callback = function(Value)
     _G.start = true
 while _G.start do
