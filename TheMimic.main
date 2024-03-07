@@ -34,3 +34,6 @@ MakeNotifi({
   Text = "Test",
   Time = 5
 })
+
+local section = AddSection(Main, {"Teste"})
+SetSection(section, "Chapter 1")
