@@ -28,14 +28,12 @@ MinimizeButton({
   StrokeColor = Color3.fromRGB(255, 0, 0)
 })
 
-
 local Main = MakeTab({Name = "Book 1"})
 MakeNotifi({
   Title = "Exility HUB",
   Text = "Test",
   Time = 5
 })
-
 local section = AddSection(Book 1, {"Chapter 1"})
 AddButton(Book 1, {
   Name = "Part 1",
