@@ -37,3 +37,9 @@ MakeNotifi({
 
 local section = AddSection(Main, {"Teste"})
 SetSection(section, "Chapter 1")
+AddButton(Main, {
+  Name = "Botão teste",
+  Callback = function()
+    
+  end
+})
