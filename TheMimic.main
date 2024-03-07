@@ -235,6 +235,15 @@ end,true)
 })
 
 local section = AddSection(Main, {"Teste"})
+SetSection(section, "Fullbright")
+AddButton(Main, {
+  Name = "Fullbright",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/MerryXTrash/Fullbrightt/main/Light"))()
+  end
+})
+
+local section = AddSection(Main, {"Teste"})
 SetSection(section, "Misc")
 AddButton(Main, {
   Name = "Infinite Yeild",
