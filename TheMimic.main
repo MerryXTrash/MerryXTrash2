@@ -35,6 +35,7 @@ MakeNotifi({
   Time = 5
 })
 local section = AddSection(Book 1, {"Chapter 1"})
+SetSection(section, "Test")
 AddButton(Book 1, {
   Name = "Part 1",
   Callback = function()
