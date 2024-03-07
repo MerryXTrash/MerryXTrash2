@@ -29,11 +29,6 @@ MinimizeButton({
 })
 
 local Main = MakeTab({Name = "Book 1"})
-MakeNotifi({
-  Title = "Exility HUB",
-  Text = "Test",
-  Time = 5
-})
 
 local section = AddSection(Main, {"Teste"})
 SetSection(section, "Chapter 1")
@@ -101,11 +96,6 @@ AddButton(Main, {
   end
 })
 local Main = MakeTab({Name = "Gamemode"})
-MakeNotifi({
-  Title = "Exility HUB",
-  Text = "Test",
-  Time = 5
-})
 
 local section = AddSection(Main, {"Teste"})
 SetSection(section, "The Witch Trial")
@@ -129,11 +119,6 @@ AddButton(Main, {
 })
 
 local Main = MakeTab({Name = "Setting"})
-MakeNotifi({
-  Title = "Exility HUB",
-  Text = "Test",
-  Time = 5
-})
 
 local section = AddSection(Main, {"Teste"})
 SetSection(section, "Misc")
