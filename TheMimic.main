@@ -47,4 +47,3 @@ AddButton(Book 1, {
     game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1272.7239990234375, 200.04153442382812, -2537.25)
   end
 })
-
