@@ -161,19 +161,19 @@ SetSection(section, "Chapter 3")
 AddButton(Main, {
   Name = "Part 1",
   Callback = function()
-    game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(241.43087768554688, 33.24515914916992, 450.21502685546875)
+    game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2411.138916015625, -23.03112030029297, 2267.944580078125)
   end
 })
 AddButton(Main, {
   Name = "Part 2",
   Callback = function()
-    game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-299.6040954589844, 88.01011657714844, -547.1454467773438)
+    game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-301.47650146484375, 88.01011657714844, -542.3770751953125)
   end
 })
 AddButton(Main, {
   Name = "Part 3",
   Callback = function()
-    game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(432.0301818847656, 17.494962692260742, -844.9414672851562)
+    game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(431.4171142578125, 17.476003646850586, -846.1138916015625)
   end
 })
 local Main = MakeTab({Name = "Setting"})
