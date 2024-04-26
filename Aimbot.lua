@@ -1,11 +1,42 @@
-function gayhod()
-  loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
-end
+loadstring(game:HttpGet(("https://raw.githubusercontent.com/REDzHUB/LibraryV2/main/redzLib")))()
+MakeWindow({
+  Hub = {
+    Title = "แอ๋มโยกัง",
+    Animation = "By : Raphae1"
+  },
+  Key = {
+    KeySystem = false,
+    Title = "Xozaity HUB",
+    Description = "",
+    KeyLink = "https://sub4unlock.io/1kPsC",
+    Keys = {"Exility-QT2M-UVA1-2550"},
+    Notifi = {
+      Notifications = true,
+      CorrectKey = "Key is Correct wait(..)",
+      Incorrectkey = "The key is incorrect",
+      CopyKeyLink = "Copied to Clipboard"
+    }
+  }
+})
 
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("Aimbot | ไว้ยิงไก่แอ๋ม", "BloodTheme")
-local Tab = Window:NewTab("แอ๋มกากเล่นโปร")
-Section:UpdateSection("ล็อคหัวไก่แอ๋ม")
-Section:NewButton("กดเพื่อยิงไก่", "UwuUUUu", function()
-    gayhod()
-end)
+MinimizeButton({
+  Image = "rbxassetid://16647182763",
+  Size = {55, 55},
+  Color = Color3.fromRGB(10, 10, 10),
+  Corner = true,
+  Stroke = false,
+  StrokeColor = Color3.fromRGB(255, 0, 0)
+})
+
+--farm
+local Main = MakeTab({Name = "Main"})
+local section = AddSection(Main, {"Teste"})
+SetSection(section, "By Xenon hub")
+SetSection(section, "By Xenon hub")
+SetSection(section, "By Xenon hub")
+AddButton(Main, {
+  Name = "เปิดไก่แอ๋ม",
+  Callback = function()
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/zzerexx/scripts/main/UniversalAimbotUI.lua"))()
+  end
+})
