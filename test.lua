@@ -16,7 +16,6 @@ local games = {
 	[7068738088 and 7068951438] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/TwT.lua', --TwT1
 	[7068951914 and 7068951914] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/TwT2.lua', --TwT2
 	[7068740106 and 7068952294] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/TwT3.lua',--TwT3
-	--classic
 	[15989427413] = '', --lobby
 	[15996404472] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/cs1.lua', --1.1
 	[15996407335] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/cs2.lua', --1.2
