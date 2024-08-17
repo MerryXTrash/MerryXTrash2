@@ -41,7 +41,7 @@ AddButton(Main, {
 AddButton(Main, {
   Name = "Teleport to Red Reaper",
   Callback = function()
-    game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1272.7239990234375, 200.04153442382812, -2537.25)
+    game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(310.15985107421875, 3.2333197593688965, 320.0658874511719)
   end
 })
 
