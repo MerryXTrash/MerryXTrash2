@@ -15,7 +15,7 @@ local games = {
     [7068737459] = '', --lobby 2
     [7068738088] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/TwT.lua', --TwT1
     [7068951914] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/TwT2.lua', --TwT2
-    [7068740106] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/TwT3.lua', --TwT3
+    [7068740106] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/TwT3.lua' --TwT3
 }
 
 local currentPlaceId = game.PlaceId
@@ -23,6 +23,4 @@ local gameUrl = games[currentPlaceId]
 
 if gameUrl then
     loadstring(game:HttpGet(gameUrl))()
-else
-    
 end
