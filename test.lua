@@ -24,7 +24,8 @@ local games = {
 	[15996413469] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/cs5.lua', --2.3
 	[15996414738] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/cs6.lua', --3.1
 	[15996416081] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/cs7.lua', --3.2
-	[15996417416] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/cs8.lua' --3.3
+	[15996417416] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/cs8.lua', --3.3
+	[7068740106 and 7068952294] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/TwT3.lua'--TwT3
 }
 
 local currentPlaceId = game.PlaceId
