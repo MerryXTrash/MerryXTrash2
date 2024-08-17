@@ -1,4 +1,4 @@
-loadstring(game:HttpGet(("https://raw.githubusercontent.com/REDzHUB/LibraryV2/main/redzLib")))()
+loadstring(game:HttpGet(("https://github.com/MerryXTrash/MerryXTrash2/blob/main/UI.lua")))()
 MakeWindow({
   Hub = {
     Title = "Exility HUB",
