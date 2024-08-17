@@ -1,3 +1,40 @@
+--Lobby
+local Normal = 6243699076
+local Gamemode = 7068737459
+--Book1ch1
+local Ch1Part1 = 6296321810
+local Ch1Part2 = 6301638949
+--Book1ch2
+local Ch2Part1 = 6373539583
+local Ch2Part2 = 6406571212
+local Ch2Part3 = 6425178683
+--Book1ch3
+local Ch3Part1 = 6472459099
+local Ch3Part2 = 6682163754
+local Ch3Part3 = 6682164423
+--Book1ch4
+local Ch4Part1 = nil
+local Ch4Part2 = nil
+local Ch4Part3 = nil
+local Ch4Part4 = nil
+--Book2ch1
+local Book2ch1 = nil
+--Book2ch2
+local Book2ch2 = nil
+--Book2ch3
+local Book2ch3 = nil
+--The wicth
+local TwTPart1 = 7068738088
+local TwTPart2 = 7068951914
+local TwTPart3 = 7068740106
+--Xmas
+local Xmas = nil
+--Circus
+local Circus = nil
+--Halloween
+local Halloween = nil
+
+
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/UI.lua")))()
 MakeWindow({
   Hub = {
