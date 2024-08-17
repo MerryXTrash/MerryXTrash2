@@ -69,21 +69,6 @@ AddButton(Main, {
             end
         end
         fireProximityPrompts()
-        wait(0.1)
-        local Players = game:GetService("Players")
-        local player = Players.LocalPlayer
-
-        local function anchorPlayerCharacter()
-            if player and player.Character then
-                for _, part in pairs(player.Character:GetDescendants()) do
-                    if part:IsA("BasePart") then
-                        part.Anchored = true
-                    end
-                end
-            end
-        end
-        anchorPlayerCharacter()
-    end
 })
 
 local section = AddSection(Main, {"Teste"})
