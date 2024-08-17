@@ -1,4 +1,4 @@
-loadstring(game:HttpGet(("https://github.com/MerryXTrash/MerryXTrash2/blob/main/UI.lua")))()
+loadstring(game:HttpGet(("https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/UI.lua")))()
 MakeWindow({
   Hub = {
     Title = "Xervice HUB",
