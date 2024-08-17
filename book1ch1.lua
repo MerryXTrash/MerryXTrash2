@@ -38,6 +38,9 @@ AddButton(Main, {
     game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(3507.028564453125, 43.13663864135742, -1541.9735107421875)
   end
 })
+
+local section = AddSection(Main, {"Teste"})
+SetSection(section, "Jigoku Event")
 AddButton(Main, {
   Name = "Teleport to Red Reaper",
   Callback = function()
