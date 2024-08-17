@@ -53,13 +53,22 @@ AddButton(Main, {
 AddButton(Main, {
     Name = "Prompt",
     Callback = function()
+        AddButton(Main, {
+    Name = "Trigger All Prompts",
+    Callback = function()
         for _, v in pairs(game:GetService("Workspace"):GetDescendants()) do
             if v:IsA("ProximityPrompt") then
-                v.HoldDuration = 0 -- Set to instant activation
-                v:Trigger()
+                -- Ensure HoldDuration is set to 0 for instant activation
+                v.HoldDuration = 0
+                -- Trigger the ProximityPrompt
+                if v.Parent and v.Parent:IsA("BasePart") then
+                    v:Fire()
+                end
             end
         end
     end
+})
+
 })
 
 
