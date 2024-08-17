@@ -1,9 +1,9 @@
 local games = {
-    [6296321810] = 'https://raw.githubusercontent.com/MerryXTrash/TheMimic.lua/main/Krampus_exe/Book1Ch1', --1.1
-    [6301638949] = 'https://raw.githubusercontent.com/MerryXTrash/TheMimic.lua/main/Krampus_exe/Book1chapter1.2', --1.2
-    [6373539583] = 'https://raw.githubusercontent.com/MerryXTrash/TheMimic.lua/main/Book1ch2/Book1ch2.1', --2.1
-    [6406571212] = 'https://raw.githubusercontent.com/MerryXTrash/TheMimic.lua/main/Book1ch2/Book1ch2.2', --2.2
-    [6425178683] = 'https://raw.githubusercontent.com/MerryXTrash/TheMimic.lua/main/Book1ch2/Book1ch2.3', --2.3
+    [6296321810] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/book1ch1.lua', --1.1
+    [6301638949] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/book1ch1End.lua', --1.2
+    [6373539583] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/b1c2p1.lua', --2.1
+    [6406571212] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/b1ch2p2.lua', --2.2
+    [6425178683] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/b1c2End.lua', --2.3
     [6472459099] = 'https://raw.githubusercontent.com/MerryXTrash/TheMimic.lua/main/Book1ch3/Book1ch3.1', --3.1
     [6682163754] = 'https://raw.githubusercontent.com/MerryXTrash/TheMimic.lua/main/Book1ch3/Book1ch3.2', --3.2
     [6682164423] = 'https://raw.githubusercontent.com/MerryXTrash/TheMimic.lua/main/Book1ch3/Book1ch3.3', --3.3
