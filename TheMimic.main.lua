@@ -2,7 +2,7 @@ loadstring(game:HttpGet(("https://raw.githubusercontent.com/MerryXTrash/MerryXTr
 MakeWindow({
   Hub = {
     Title = "Xervice HUB",
-    Animation = "By : Sofia1stCute4>"<"
+    Animation = "By : Sofia1stCute4 🍉"
   },
   Key = {
     KeySystem = false,
