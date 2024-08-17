@@ -1,12 +1,12 @@
 loadstring(game:HttpGet(("https://github.com/MerryXTrash/MerryXTrash2/blob/main/UI.lua")))()
 MakeWindow({
   Hub = {
-    Title = "Exility HUB",
-    Animation = "By : MerrySubset"
+    Title = "Xervice HUB",
+    Animation = "By : Sofia1st"
   },
   Key = {
     KeySystem = false,
-    Title = "Exility HUB",
+    Title = "Xervice HUB",
     Description = "",
     KeyLink = "https://sub4unlock.io/1kPsC",
     Keys = {"Exility-QT2M-UVA1-2550"},
