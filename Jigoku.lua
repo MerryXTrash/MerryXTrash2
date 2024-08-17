@@ -92,7 +92,7 @@ AddButton(Main, {
     Name = "Auto Correct Orb",
     Callback = function()
         _G.AutoOrb = true
-        local heightOffset = 10
+        local heightOffset = 4
 
         while _G.AutoOrb do
             wait(0.3)
