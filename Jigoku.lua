@@ -1,5 +1,7 @@
-loadstring(game:HttpGet(("https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/UI.lua")))()
+-- Load UI Library
+loadstring(game:HttpGet("https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/UI.lua"))()
 
+-- Create Main Window
 MakeWindow({
     Hub = {
         Title = "Xervice HUB",
@@ -13,13 +15,14 @@ MakeWindow({
         Keys = {"ImAloneToT"},
         Notifi = {
             Notifications = true,
-            CorrectKey = "Key is Correct wait(..)",
-            Incorrectkey = "The key is incorrect",
+            CorrectKey = "Key is Correct, please wait...",
+            IncorrectKey = "The key is incorrect",
             CopyKeyLink = "Copied to Clipboard"
         }
     }
 })
 
+-- Configure Minimize Button
 MinimizeButton({
     Image = "rbxassetid://18982309971",
     Size = {55, 55},
@@ -29,15 +32,17 @@ MinimizeButton({
     StrokeColor = Color3.fromRGB(255, 0, 0)
 })
 
+-- Create Main Tab
 local Main = MakeTab({Name = "Jigoku"})
 
+-- Button to Enter Zone and Trigger Prompts
 AddButton(Main, {
     Name = "Enter Zone",
     Callback = function()
         local player = game.Players.LocalPlayer
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(609.1365966796875, 17.569908142089844, 1087.6727294921875)
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(609.1366, 17.5699, 1087.6727)
         wait(2)
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(601.8018188476562, 111.05647277832031, 836.9151000976562)
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151)
         wait(0.1)
 
         -- Fire all proximity prompts
@@ -50,17 +55,13 @@ AddButton(Main, {
     end
 })
 
+-- Button to Trigger All Prompts
 AddButton(Main, {
-    Name = "Prompt",
-    Callback = function()
-        AddButton(Main, {
     Name = "Trigger All Prompts",
     Callback = function()
         for _, v in pairs(game:GetService("Workspace"):GetDescendants()) do
             if v:IsA("ProximityPrompt") then
-                -- Ensure HoldDuration is set to 0 for instant activation
                 v.HoldDuration = 0
-                -- Trigger the ProximityPrompt
                 if v.Parent and v.Parent:IsA("BasePart") then
                     v:Fire()
                 end
@@ -69,11 +70,7 @@ AddButton(Main, {
     end
 })
 
-})
-
-
-local section = AddSection(Main, {"Teste"})
-SetSection(section, "Quest")
+-- Auto Orb Collection
 AddButton(Main, {
     Name = "Auto Correct Orb",
     Callback = function()
@@ -96,13 +93,17 @@ AddButton(Main, {
                                 local targetCFrame = v:IsA("BasePart") and v.CFrame or v.PrimaryPart.CFrame
                                 humanoidRootPart.CFrame = targetCFrame + Vector3.new(0, heightOffset, 0)
                                 orbFound = true
+                                wait(0.1)
+                                game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+                                wait(0.1)
+                                game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.E, false, game)
                                 break
                             end
                         end
                     end
 
                     if not orbFound then
-                        humanoidRootPart.CFrame = CFrame.new(601.8018188476562, 111.05647277832031, 836.9151000976562)
+                        humanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151)
                     end
                 end
             end
@@ -110,12 +111,11 @@ AddButton(Main, {
     end
 })
 
+-- Create Settings Tab
+local Settings = MakeTab({Name = "Settings"})
 
-local Main = MakeTab({Name = "Setting"})
-
-local section = AddSection(Main, {"Teste"})
-SetSection(section, "Fullbright")
-AddButton(Main, {
+-- Fullbright Feature
+AddButton(Settings, {
     Name = "Fullbright",
     Callback = function()
         spawn(function()
@@ -132,21 +132,22 @@ AddButton(Main, {
     end
 })
 
-local section = AddSection(Main, {"Teste"})
-SetSection(section, "Misc")
-AddButton(Main, {
-    Name = "Infinite Yeild",
+-- Miscellaneous Utilities
+AddButton(Settings, {
+    Name = "Infinite Yield",
     Callback = function()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
     end
 })
-AddButton(Main, {
+
+AddButton(Settings, {
     Name = "Fly",
     Callback = function()
         loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\40\39\104\116\116\112\115\58\47\47\103\105\115\116\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\109\101\111\122\111\110\101\89\84\47\98\102\48\51\55\100\102\102\57\102\48\97\55\48\48\49\55\51\48\52\100\100\100\54\55\102\100\99\100\51\55\48\47\114\97\119\47\101\49\52\101\55\52\102\52\50\53\98\48\54\48\100\102\53\50\51\51\52\51\99\102\51\48\98\55\56\55\48\55\52\101\98\51\99\53\100\50\47\97\114\99\101\117\115\37\50\53\50\48\120\37\50\53\50\48\102\108\121\37\50\53\50\48\50\37\50\53\50\48\111\98\102\108\117\99\97\116\111\114\39\41\44\116\114\117\101\41\41\40\41\10\10")()
     end
 })
-AddButton(Main, {
+
+AddButton(Settings, {
     Name = "Rejoin - Press if You Die",
     Callback = function()
         local TeleportService = game:GetService("TeleportService")
