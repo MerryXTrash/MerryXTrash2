@@ -52,7 +52,16 @@ SetSection(section, "Fullbright")
 AddButton(Main, {
   Name = "Fullbright",
   Callback = function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/MerryXTrash/Fullbrightt/main/Light"))()
+    spawn(function()
+    local Time = game.Lighting
+    Time.ClockTime = 12
+    Time.Ambient = Color3.new(1, 1, 1)
+    Time.Brightness = 10
+    ColorCorrection.Brightness = 0.2
+    ColorCorrection.Contrast = 0
+    ColorCorrection.TintColor = Color3.new(1, 1, 1)
+    ColorCorrection.Enable = true
+end)
   end
 })
 
@@ -71,8 +80,22 @@ AddButton(Main, {
   end
 })
 AddButton(Main, {
-  Name = "Quick Leave",
+  Name = "Rejoin - Press if You Die",
   Callback = function()
-    game.Players.LocalPlayer:Kick(Noob)
+    local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+ 
+local Rejoin = coroutine.create(function()
+    local Success, ErrorMessage = pcall(function()
+        TeleportService:Teleport(game.PlaceId, LocalPlayer)
+    end)
+ 
+    if ErrorMessage and not Success then
+        warn(ErrorMessage)
+    end
+end)
+ 
+coroutine.resume(Rejoin)
   end
 })
