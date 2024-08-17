@@ -34,42 +34,34 @@ local Main = MakeTab({Name = "Jigoku"})
 AddButton(Main, {
     Name = "Enter Zone",
     Callback = function()
-        local player = game.Players.localPlayer
+        local player = game.Players.LocalPlayer
         player.Character.HumanoidRootPart.CFrame = CFrame.new(609.1365966796875, 17.569908142089844, 1087.6727294921875)
         wait(2)
         player.Character.HumanoidRootPart.CFrame = CFrame.new(601.8018188476562, 111.05647277832031, 836.9151000976562)
         wait(0.1)
-        local ProximityPromptService = game:GetService("ProximityPromptService")
-        local function fireproximityprompt(prompt)
-            wait(0.1)
-            _G.ae = true
-            while _G.ae do
-                wait(0.1)
-                game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+
+        -- Fire all proximity prompts
+        for _, v in pairs(game:GetService("Workspace"):GetDescendants()) do
+            if v:IsA("ProximityPrompt") then
+                v.HoldDuration = 0 -- Make prompt activate instantly
+                v:Trigger()
             end
         end
-        ProximityPromptService.PromptButtonHoldBegan:Connect(function(prompt)
-            fireproximityprompt(prompt)
-        end)
     end
 })
 
 AddButton(Main, {
     Name = "Prompt",
     Callback = function()
-        local ProximityPromptService = game:GetService("ProximityPromptService")
-        local function fireProximityPrompts()
-            for _, v in pairs(game:GetService("Workspace"):GetDescendants()) do
-                if v:IsA("ProximityPrompt") then
-                    v.HoldDuration = 0
-                    v.Triggered:Connect(function(prompt)
-                        prompt:Fire()
-                    end)
-                end
+        for _, v in pairs(game:GetService("Workspace"):GetDescendants()) do
+            if v:IsA("ProximityPrompt") then
+                v.HoldDuration = 0 -- Set to instant activation
+                v:Trigger()
             end
         end
-        fireProximityPrompts()
+    end
 })
+
 
 local section = AddSection(Main, {"Teste"})
 SetSection(section, "Quest")
@@ -86,27 +78,29 @@ AddButton(Main, {
             local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
 
             if humanoidRootPart then
-                local orbs = game:GetService("Workspace").GameAI.Souls:GetChildren()
-                local orbFound = false
-
-                for _, v in pairs(orbs) do
-                    if v.Name == "Orb" then
-                        if v:IsA("BasePart") or (v:IsA("Model") and v.PrimaryPart) then
-                            local targetCFrame = v:IsA("BasePart") and v.CFrame or v.PrimaryPart.CFrame
-                            humanoidRootPart.CFrame = targetCFrame + Vector3.new(0, heightOffset, 0)
-                            orbFound = true
-                            break
+                local orbs = game:GetService("Workspace"):FindFirstChild("GameAI") and game.Workspace.GameAI:FindFirstChild("Souls")
+                if orbs then
+                    local orbFound = false
+                    for _, v in pairs(orbs:GetChildren()) do
+                        if v.Name == "Orb" then
+                            if v:IsA("BasePart") or (v:IsA("Model") and v.PrimaryPart) then
+                                local targetCFrame = v:IsA("BasePart") and v.CFrame or v.PrimaryPart.CFrame
+                                humanoidRootPart.CFrame = targetCFrame + Vector3.new(0, heightOffset, 0)
+                                orbFound = true
+                                break
+                            end
                         end
                     end
-                end
 
-                if not orbFound then
-                    humanoidRootPart.CFrame = CFrame.new(601.8018188476562, 111.05647277832031, 836.9151000976562)
+                    if not orbFound then
+                        humanoidRootPart.CFrame = CFrame.new(601.8018188476562, 111.05647277832031, 836.9151000976562)
+                    end
                 end
             end
         end
     end
 })
+
 
 local Main = MakeTab({Name = "Setting"})
 
