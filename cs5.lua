@@ -35,7 +35,7 @@ SetSection(section, "Chapter 2")
 AddButton(Main, {
   Name = "Part 3",
   Callback = function()
-    game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1055.5179443359375, 78.26939392089844, -351.45831298828125)
+    game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1013.8822021484375, 75.34132385253906, -352.441650390625)
   end
 })
 
