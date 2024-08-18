@@ -40,7 +40,7 @@ AddButton(Main, {
     Name = "Enter Zone",
     Callback = function()
         local player = game.Players.LocalPlayer
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(608.1366, 17.5699, 1087.6727)
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(609.1366, 17.5699, 1087.6727)
         wait(2)
         player.Character.HumanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151)
         wait(0.1)
@@ -146,7 +146,7 @@ local function stopFreezingPlayer()
 end
 
 AddToggle(Main, {
-    Name = "Auto Correct Orb",
+    Name = "Freeze Player on Upper Orb",
     Callback = function(state)
         freezeToggle = state
         if freezeToggle then
@@ -211,5 +211,28 @@ AddButton(Settings, {
         end
 
         rejoinGame()
+    end
+})
+
+-- Button to Teleport to a Specific Game
+AddButton(Settings, {
+    Name = "Teleport to Jigoku",
+    Callback = function()
+        local TeleportService = game:GetService("TeleportService")
+        local Players = game:GetService("Players")
+        local LocalPlayer = Players.LocalPlayer
+        local targetPlaceId = 7618863566 -- Replace with the target PlaceId
+
+        local function teleportToGame()
+            local Success, ErrorMessage = pcall(function()
+                TeleportService:Teleport(targetPlaceId, LocalPlayer)
+            end)
+
+            if not Success then
+                warn("Failed to teleport: " .. tostring(ErrorMessage))
+            end
+        end
+
+        teleportToGame()
     end
 })
