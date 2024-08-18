@@ -168,8 +168,7 @@ end
 AddToggle(Main, {
     Name = "Auto Correct Orb",
     Callback = function(state)
-        autoOrbToggle = state
-        if autoOrbToggle then
+        if state then
             startAutoOrbCollection()
         else
             stopAutoOrbCollection()
