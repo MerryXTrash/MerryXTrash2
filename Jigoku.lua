@@ -1,4 +1,4 @@
--- Load UI Library
+-- Ensure UI Library is loaded
 loadstring(game:HttpGet("https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/UI.lua"))()
 
 -- Create Main Window
@@ -88,11 +88,13 @@ local function startAutoOrbCollection()
 
     local function toggleCameraLock()
         isCameraLocked = not isCameraLocked
-        camera.CameraType = isCameraLocked and Enum.CameraType.Scriptable or Enum.CameraType.Custom
+        if camera then
+            camera.CameraType = isCameraLocked and Enum.CameraType.Scriptable or Enum.CameraType.Custom
+        end
     end
 
     local function updateCamera(targetPosition)
-        if isCameraLocked then
+        if isCameraLocked and camera then
             local cameraPosition = targetPosition + Vector3.new(0, cameraHeight, -cameraDistance)
             camera.CFrame = CFrame.new(cameraPosition, targetPosition)
         end
@@ -128,7 +130,7 @@ local function startAutoOrbCollection()
 
     spawn(function()
         while _G.AutoOrb do
-            wait(0.3)
+            wait(0.3) -- Adjust the wait time if needed
             local player = game.Players.LocalPlayer
             local character = player and player.Character
             local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
@@ -139,24 +141,25 @@ local function startAutoOrbCollection()
                     local orbFound = false
                     for _, v in pairs(orbs:GetChildren()) do
                         if v.Name == "Orb" then
-                            if v:IsA("BasePart") or (v:IsA("Model") and v.PrimaryPart) then
-                                local targetCFrame = v:IsA("BasePart") and v.CFrame or v.PrimaryPart.CFrame
-                                -- Position the player above the orb
-                                humanoidRootPart.CFrame = targetCFrame * CFrame.new(0, anchorHeight, 0)
-                                updateCamera(targetCFrame.Position)
-                                orbFound = true
-                                autoPressE()
-                                fireProximityPromptsIfNear() -- Fire proximity prompts if near when an orb is collected
-                                wait(0.1)
-                                break
-                            end
+                            local targetCFrame = v:IsA("BasePart") and v.CFrame or v.PrimaryPart.CFrame
+                            humanoidRootPart.CFrame = targetCFrame * CFrame.new(0, anchorHeight, 0)
+                            updateCamera(targetCFrame.Position)
+                            orbFound = true
+                            autoPressE()
+                            fireProximityPromptsIfNear()
+                            wait(0.1) -- Adjust if needed
+                            break
                         end
                     end
 
                     if not orbFound then
                         humanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151)
                     end
+                else
+                    warn("Orbs container not found!")
                 end
+            else
+                warn("HumanoidRootPart not found!")
             end
         end
     end)
