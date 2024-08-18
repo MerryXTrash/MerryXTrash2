@@ -158,10 +158,8 @@ AddButton(Main, {
         spawn(function()
             while _G.Auto do
                 wait(0.1)
-                pcall(function()
                     teleportToHighestOrbAboveHead()
                     game:GetService("VirtualInputManager"):SendKeyEvent(true,Enum.KeyCode.E,false,game)
-                end)
             end
         end)
     end
