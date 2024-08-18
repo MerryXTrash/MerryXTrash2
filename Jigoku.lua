@@ -182,14 +182,7 @@ AddButton(Main, {
         _G.FireLoop = true
             while _G.FireLoop do
                 wait(0.1)
-                for _, v in pairs(workspace:GetDescendants()) do
-                    if v:IsA("ProximityPrompt") then
-                        v.HoldDuration = 0
-                        if v.Parent and v.Parent:IsA("BasePart") then
-                            v:Fire()
-                        end
-                    end
-                end
+                game:GetService("VirtualInputManager"):SendKeyEvent(true,Enum.KeyCode.E)
             end
     end
 })
