@@ -40,7 +40,7 @@ AddButton(Main, {
     Name = "Enter Zone",
     Callback = function()
         local player = game.Players.LocalPlayer
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(609.1366, 17.5699, 1087.6727)
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(608.1366, 17.5699, 1087.6727)
         wait(2)
         player.Character.HumanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151)
         wait(0.1)
@@ -146,7 +146,7 @@ local function stopFreezingPlayer()
 end
 
 AddToggle(Main, {
-    Name = "Freeze Player on Upper Orb",
+    Name = "Auto Correct Orb",
     Callback = function(state)
         freezeToggle = state
         if freezeToggle then
