@@ -35,100 +35,124 @@ MinimizeButton({
 -- Create Main Tab
 local Main = MakeTab({Name = "Jigoku"})
 
--- Function to create BodyGyro and BodyVelocity for flying
-local function setupFlying(character)
-    if not character or not character:FindFirstChild("HumanoidRootPart") then return end
+-- Button to Enter Zone and Trigger Prompts
+AddButton(Main, {
+    Name = "Enter Zone",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(609.1366, 17.5699, 1087.6727)
+        wait(2)
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151)
+        wait(0.1)
 
-    local humanoidRootPart = character.HumanoidRootPart
-    local bodyGyro = Instance.new("BodyGyro", humanoidRootPart)
-    local bodyVelocity = Instance.new("BodyVelocity", humanoidRootPart)
+        -- Fire all proximity prompts
+        local function updateAllProximityPrompts()
+            for _, object in ipairs(workspace:GetDescendants()) do
+                if object:IsA("ProximityPrompt") then
+                    object.HoldDuration = 0
+                end
+            end
+        end
 
-    bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
-    bodyGyro.CFrame = humanoidRootPart.CFrame
-    bodyGyro.P = 3000
-
-    bodyVelocity.Velocity = Vector3.new(0, 0, 0)
-    bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
-end
-
--- Function to remove BodyGyro and BodyVelocity
-local function removeFlying(character)
-    if not character then return end
-
-    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-    if not humanoidRootPart then return end
-
-    local bodyGyro = humanoidRootPart:FindFirstChildOfClass("BodyGyro")
-    local bodyVelocity = humanoidRootPart:FindFirstChildOfClass("BodyVelocity")
-
-    if bodyGyro then bodyGyro:Destroy() end
-    if bodyVelocity then bodyVelocity:Destroy() end
-end
-
--- Auto Fire ProximityPrompts When Near
-local function autoFireProximityPrompts()
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
-
-    if not humanoidRootPart then
-        return
+        updateAllProximityPrompts()
     end
+})
 
-    local detectionRadius = 10  -- Adjust this value based on how close you want to be to the prompt
-
-    while true do
-        wait(0.3)  -- Adjust the check frequency as needed
-
-        local proximityPrompts = workspace:GetDescendants()
-        for _, obj in pairs(proximityPrompts) do
-            if obj:IsA("ProximityPrompt") and obj.Parent and obj.Parent:IsA("BasePart") then
-                local part = obj.Parent
-                local distance = (humanoidRootPart.Position - part.Position).magnitude
-
-                if distance <= detectionRadius then
-                    local direction = part.Position - humanoidRootPart.Position
-                    if direction.Y > 0 then  -- Check if the orb is above the player
-                        obj:Fire()
-
-                        -- Set up flying if the orb is found above
-                        if obj.Parent.Name == "Orb" then
-                            setupFlying(character)
-                            -- Optionally adjust velocity or other flying parameters
-                            local bodyVelocity = humanoidRootPart:FindFirstChildOfClass("BodyVelocity")
-                            if bodyVelocity then
-                                bodyVelocity.Velocity = Vector3.new(0, 50, 0)  -- Adjust the velocity as needed
-                            end
-                        end
-                    end
+-- Button to Trigger All Prompts
+AddButton(Main, {
+    Name = "Prompts",
+    Callback = function()
+        for _, v in pairs(workspace:GetDescendants()) do
+            if v:IsA("ProximityPrompt") then
+                v.HoldDuration = 0
+                if v.Parent and v.Parent:IsA("BasePart") then
+                    v:Fire()
                 end
             end
         end
     end
+})
+
+-- Toggle for Freezing Player when Orb is Above
+local freezeToggle = false
+
+local function startFreezingPlayer()
+    _G.FreezePlayer = true
+    local heightOffset = 4
+
+    local function freezePlayer()
+        local player = game.Players.LocalPlayer
+        local character = player and player.Character
+        local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
+
+        if humanoidRootPart then
+            local orbs = workspace:FindFirstChild("GameAI") and workspace.GameAI:FindFirstChild("Souls")
+            if orbs then
+                local orbFound = false
+                for _, v in pairs(orbs:GetChildren()) do
+                    if v.Name == "Orb" then
+                        if v:IsA("BasePart") or (v:IsA("Model") and v.PrimaryPart) then
+                            local targetCFrame = v:IsA("BasePart") and v.CFrame or v.PrimaryPart.CFrame
+                            local targetPosition = targetCFrame.Position
+
+                            -- Check if orb is above the player
+                            if targetPosition.Y > humanoidRootPart.Position.Y then
+                                -- Freeze player
+                                humanoidRootPart.Anchored = true
+                                
+                                -- Move player to orb position and interact
+                                humanoidRootPart.CFrame = targetCFrame + Vector3.new(0, heightOffset, 0)
+                                wait(0.1)
+
+                                -- Auto-press "E" key
+                                local virtualInputManager = game:GetService("VirtualInputManager")
+                                virtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+                                wait(0.1)
+                                virtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+
+                                orbFound = true
+                                wait(0.1)
+                                break
+                            end
+                        end
+                    end
+                end
+
+                if not orbFound then
+                    -- Optionally, move player to a default position if no orbs found
+                    humanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151)
+                end
+            end
+        end
+    end
+
+    spawn(function()
+        while _G.FreezePlayer do
+            wait(0.3)
+            freezePlayer()
+        end
+    end)
 end
 
--- Toggle for Auto Proximity Prompt Firing and Flying
-local autoProximityPromptToggle = false
+local function stopFreezingPlayer()
+    _G.FreezePlayer = false
+    local player = game.Players.LocalPlayer
+    local character = player and player.Character
+    local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
 
-local function startAutoProximityPrompt()
-    spawn(autoFireProximityPrompts)
-end
-
-local function stopAutoProximityPrompt()
-    -- Note: To actually stop the function, you might need to use a more complex approach, such as using a flag or coroutine.
+    if humanoidRootPart then
+        humanoidRootPart.Anchored = false
+    end
 end
 
 AddToggle(Main, {
-    Name = "Auto Fire Proximity Prompts with Flying",
+    Name = "Freeze Player on Upper Orb",
     Callback = function(state)
-        autoProximityPromptToggle = state
-        if autoProximityPromptToggle then
-            startAutoProximityPrompt()
+        freezeToggle = state
+        if freezeToggle then
+            startFreezingPlayer()
         else
-            stopAutoProximityPrompt()
-            -- Remove BodyGyro and BodyVelocity if toggle is off
-            local character = game.Players.LocalPlayer.Character
-            removeFlying(character)
+            stopFreezingPlayer()
         end
     end
 })
