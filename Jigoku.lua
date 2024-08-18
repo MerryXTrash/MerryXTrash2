@@ -1,4 +1,4 @@
--- Ensure UI Library is loaded
+_-- Ensure UI Library is loaded
 loadstring(game:HttpGet("https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/UI.lua"))()
 
 -- Create Main Window
