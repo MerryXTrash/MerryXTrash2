@@ -47,6 +47,27 @@ AddButton(Main, {
     game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(310.15985107421875, 3.2333197593688965, 320.0658874511719)
   end
 })
+AddButton(Main, {
+    Name = "Teleport to Jigoku Hell",
+    Callback = function()
+        local TeleportService = game:GetService("TeleportService")
+        local Players = game:GetService("Players")
+        local LocalPlayer = Players.LocalPlayer
+        local newPlaceId = 123456789 -- Replace this with the new Place ID you want to teleport to
+
+        local function teleportToNewPlace()
+            local success, errorMessage = pcall(function()
+                TeleportService:Teleport(newPlaceId, LocalPlayer)
+            end)
+
+            if not success then
+                warn("Failed to teleport: " .. tostring(errorMessage))
+            end
+        end
+
+        teleportToNewPlace()
+    end
+})
 
 local Main = MakeTab({Name = "Setting"})
 
