@@ -155,13 +155,11 @@ AddButton(Main, {
     Name = "Auto Orbs",
     Callback = function()
         _G.Auto = true
-        spawn(function()
-            while _G.Auto do
+            while _G.Auto do wait()
                 wait(0.1)
                     teleportToHighestOrbAboveHead()
                     game:GetService("VirtualInputManager"):SendKeyEvent(true,Enum.KeyCode.E,false,game)
             end
-        end)
     end
 })
 
