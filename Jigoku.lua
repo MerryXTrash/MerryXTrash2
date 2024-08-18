@@ -73,86 +73,107 @@ AddButton(Main, {
     end
 })
 
--- Toggle for Freezing Player when Orb is Above
-local freezeToggle = false
+-- Toggle for Auto Orb Collection
+local autoOrbToggle = false
 
-local function startFreezingPlayer()
-    _G.FreezePlayer = true
+local function startAutoOrbCollection()
+    _G.AutoOrb = true
     local heightOffset = 4
+    local cameraDistance = 10
+    local cameraHeight = 5
+    local anchorHeight = 4 -- Height above the orb to anchor the player
 
-    local function freezePlayer()
+    local camera = workspace.CurrentCamera
+    local isCameraLocked = false
+
+    local function toggleCameraLock()
+        isCameraLocked = not isCameraLocked
+        camera.CameraType = isCameraLocked and Enum.CameraType.Scriptable or Enum.CameraType.Custom
+    end
+
+    local function updateCamera(targetPosition)
+        if isCameraLocked then
+            local cameraPosition = targetPosition + Vector3.new(0, cameraHeight, -cameraDistance)
+            camera.CFrame = CFrame.new(cameraPosition, targetPosition)
+        end
+    end
+
+    local function autoPressE()
+        local virtualInputManager = game:GetService("VirtualInputManager")
+        virtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+        wait(0.1)
+        virtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+    end
+
+    local function fireProximityPromptsIfNear()
         local player = game.Players.LocalPlayer
         local character = player and player.Character
         local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
 
         if humanoidRootPart then
-            local orbs = workspace:FindFirstChild("GameAI") and workspace.GameAI:FindFirstChild("Souls")
-            if orbs then
-                local orbFound = false
-                for _, v in pairs(orbs:GetChildren()) do
-                    if v.Name == "Orb" then
-                        if v:IsA("BasePart") or (v:IsA("Model") and v.PrimaryPart) then
-                            local targetCFrame = v:IsA("BasePart") and v.CFrame or v.PrimaryPart.CFrame
-                            local targetPosition = targetCFrame.Position
-
-                            -- Check if orb is above the player
-                            if targetPosition.Y > humanoidRootPart.Position.Y then
-                                -- Freeze player
-                                humanoidRootPart.Anchored = true
-                                
-                                -- Move player to orb position and interact
-                                humanoidRootPart.CFrame = targetCFrame + Vector3.new(0, heightOffset, 0)
-                                wait(0.1)
-
-                                -- Auto-press "E" key
-                                local virtualInputManager = game:GetService("VirtualInputManager")
-                                virtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
-                                wait(0.1)
-                                virtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
-
-                                orbFound = true
-                                wait(0.1)
-                                break
-                            end
+            for _, v in pairs(workspace:GetDescendants()) do
+                if v:IsA("ProximityPrompt") then
+                    local part = v.Parent
+                    if part and part:IsA("BasePart") then
+                        local distance = (part.Position - humanoidRootPart.Position).magnitude
+                        if distance <= 10 then -- Adjust the distance threshold as needed
+                            v.HoldDuration = 0
+                            v:Fire()
                         end
                     end
-                end
-
-                if not orbFound then
-                    -- Optionally, move player to a default position if no orbs found
-                    humanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151)
                 end
             end
         end
     end
 
     spawn(function()
-        while _G.FreezePlayer do
+        while _G.AutoOrb do
             wait(0.3)
-            freezePlayer()
+            local player = game.Players.LocalPlayer
+            local character = player and player.Character
+            local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
+
+            if humanoidRootPart then
+                local orbs = workspace:FindFirstChild("GameAI") and workspace.GameAI:FindFirstChild("Souls")
+                if orbs then
+                    local orbFound = false
+                    for _, v in pairs(orbs:GetChildren()) do
+                        if v.Name == "Orb" then
+                            if v:IsA("BasePart") or (v:IsA("Model") and v.PrimaryPart) then
+                                local targetCFrame = v:IsA("BasePart") and v.CFrame or v.PrimaryPart.CFrame
+                                -- Position the player above the orb
+                                humanoidRootPart.CFrame = targetCFrame * CFrame.new(0, anchorHeight, 0)
+                                updateCamera(targetCFrame.Position)
+                                orbFound = true
+                                autoPressE()
+                                fireProximityPromptsIfNear() -- Fire proximity prompts if near when an orb is collected
+                                wait(0.1)
+                                break
+                            end
+                        end
+                    end
+
+                    if not orbFound then
+                        humanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151)
+                    end
+                end
+            end
         end
     end)
 end
 
-local function stopFreezingPlayer()
-    _G.FreezePlayer = false
-    local player = game.Players.LocalPlayer
-    local character = player and player.Character
-    local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
-
-    if humanoidRootPart then
-        humanoidRootPart.Anchored = false
-    end
+local function stopAutoOrbCollection()
+    _G.AutoOrb = false
 end
 
 AddToggle(Main, {
-    Name = "Freeze Player on Upper Orb",
+    Name = "Auto Correct Orb",
     Callback = function(state)
-        freezeToggle = state
-        if freezeToggle then
-            startFreezingPlayer()
+        autoOrbToggle = state
+        if autoOrbToggle then
+            startAutoOrbCollection()
         else
-            stopFreezingPlayer()
+            stopAutoOrbCollection()
         end
     end
 })
@@ -211,28 +232,5 @@ AddButton(Settings, {
         end
 
         rejoinGame()
-    end
-})
-
--- Button to Teleport to a Specific Game
-AddButton(Settings, {
-    Name = "Teleport to Jigoku",
-    Callback = function()
-        local TeleportService = game:GetService("TeleportService")
-        local Players = game:GetService("Players")
-        local LocalPlayer = Players.LocalPlayer
-        local targetPlaceId = 7618863566 -- Replace with the target PlaceId
-
-        local function teleportToGame()
-            local Success, ErrorMessage = pcall(function()
-                TeleportService:Teleport(targetPlaceId, LocalPlayer)
-            end)
-
-            if not Success then
-                warn("Failed to teleport: " .. tostring(ErrorMessage))
-            end
-        end
-
-        teleportToGame()
     end
 })
