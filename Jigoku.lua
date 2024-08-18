@@ -1,4 +1,4 @@
-_-- Ensure UI Library is loaded
+-- Ensure UI Library is loaded
 loadstring(game:HttpGet("https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/UI.lua"))()
 
 -- Create Main Window
@@ -105,7 +105,7 @@ local function startAutoOrbCollection()
         virtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
     end
 
-    local function fireProximityPromptsIfNear()
+    local function fireProximityPromptIfNear()
         local player = game.Players.LocalPlayer
         local humanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
@@ -114,8 +114,8 @@ local function startAutoOrbCollection()
                 if v:IsA("ProximityPrompt") then
                     local part = v.Parent
                     if part and part:IsA("BasePart") then
-                        local distance = (part.Position - humanoidRootPart.Position).magnitude
-                        if distance <= 10 then -- Adjust the distance threshold if needed
+                        -- Check if player CFrame is close enough to the orb
+                        if (humanoidRootPart.Position - part.Position).magnitude < 5 then -- Adjust the threshold as needed
                             v.HoldDuration = 0
                             v:Fire()
                         end
@@ -141,7 +141,7 @@ local function startAutoOrbCollection()
                             updateCamera(targetCFrame.Position)
                             orbFound = true
                             autoPressE()
-                            fireProximityPromptsIfNear()
+                            fireProximityPromptIfNear()
                             break -- Exit loop after processing one orb to reduce delay
                         end
                     end
@@ -167,7 +167,7 @@ end
 
 -- Button to Toggle Auto Correct Orb
 AddButton(Main, {
-    Name = "Auto Correct Orb",
+    Name = "Toggle Auto Correct Orb",
     Callback = function()
         if autoOrbActive then
             stopAutoOrbCollection()
