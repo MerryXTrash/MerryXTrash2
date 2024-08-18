@@ -126,7 +126,8 @@ local function startAutoOrbCollection()
     end
 
     spawn(function()
-        while _G.AutoOrb do
+        while _G.AutoOrb do wait()
+                wait(0.1)
             local player = game.Players.LocalPlayer
             local humanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
