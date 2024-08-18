@@ -73,6 +73,21 @@ AddButton(Main, {
     end
 })
 
+-- Simulate Key Press Function
+local function simulateKeyPress(keyCode)
+    local inputObject = Instance.new("InputObject")
+    inputObject.UserInputType = Enum.UserInputType.Keyboard
+    inputObject.KeyCode = keyCode
+    inputObject.InputType = Enum.InputType.Keyboard
+    inputObject.InputState = Enum.UserInputState.Begin
+
+    -- Send the input
+    game:GetService("UserInputService").InputBegan:Fire(inputObject)
+    wait(0.1) -- Small delay to simulate key press duration
+    inputObject.InputState = Enum.UserInputState.End
+    game:GetService("UserInputService").InputEnded:Fire(inputObject)
+end
+
 -- Settings for teleportation
 local teleportOffset = Vector3.new(0, 5, 0)  -- Default offset above the orb
 local waitTime = 1  -- Default wait time between teleportations
@@ -93,9 +108,7 @@ local function teleportToHighestOrbAboveHead()
         local highestY = -math.huge
 
         for _, v in pairs(workspace.GameAI.Souls:GetChildren()) do
-            -- Check if the child is named "Orb"
             if v.Name == "Orb" then
-                -- Ensure the object has a CFrame property (it should be a part or model with a PrimaryPart)
                 if v:IsA("BasePart") or (v:IsA("Model") and v.PrimaryPart) then
                     local orbPosition = v:IsA("BasePart") and v.Position or v.PrimaryPart.Position
                     if orbPosition.Y > highestY then
@@ -109,14 +122,15 @@ local function teleportToHighestOrbAboveHead()
         end
 
         if highestOrb then
-            -- Teleport the player to slightly above the highest Orb's position
             local orbPosition = highestOrb:IsA("BasePart") and highestOrb.Position or highestOrb.PrimaryPart.Position
             humanoidRootPart.CFrame = CFrame.new(orbPosition + teleportOffset)
 
             wait(0.1) -- Small wait to ensure the player is teleported properly
 
-            -- Check if the player is near the orb's position
             if (humanoidRootPart.Position - orbPosition).magnitude <= 5 then
+                -- Simulate key press
+                simulateKeyPress(Enum.KeyCode.E)
+
                 -- Fire proximity prompts if near
                 for _, prompt in pairs(workspace:GetDescendants()) do
                     if prompt:IsA("ProximityPrompt") then
@@ -129,7 +143,6 @@ local function teleportToHighestOrbAboveHead()
                 end
             end
         else
-            -- Optionally, move to a fallback position if no orbs are found
             humanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151) -- Fallback position
         end
 
@@ -142,12 +155,14 @@ AddButton(Main, {
     Name = "Auto Orbs",
     Callback = function()
         _G.Auto = true
-            while _G.Auto do wait()
-                wait(0.2)
         spawn(function()
-            teleportToHighestOrbAboveHead()
-        end)
+            while _G.Auto do
+                wait(0.2)
+                pcall(function()
+                    teleportToHighestOrbAboveHead()
+                end)
             end
+        end)
     end
 })
 
