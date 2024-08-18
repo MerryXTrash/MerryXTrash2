@@ -73,111 +73,66 @@ AddButton(Main, {
     end
 })
 
--- Variables to manage auto orb collection state
-local autoOrbActive = false
+-- Function to teleport player to each Orb and fire ProximityPrompt
+local function teleportToOrbs()
+    local player = game.Players.LocalPlayer
+    local character = player and player.Character
+    local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
 
-local function startAutoOrbCollection()
-    _G.AutoOrb = true
-    local cameraDistance = 10
-    local cameraHeight = 5
-    local anchorHeight = 4 -- Height above the orb to anchor the player
-
-    local camera = workspace.CurrentCamera
-    local isCameraLocked = false
-
-    local function toggleCameraLock()
-        isCameraLocked = not isCameraLocked
-        if camera then
-            camera.CameraType = isCameraLocked and Enum.CameraType.Scriptable or Enum.CameraType.Custom
-        end
+    if not humanoidRootPart then
+        warn("HumanoidRootPart not found!")
+        return
     end
 
-    local function updateCamera(targetPosition)
-        if isCameraLocked and camera then
-            local cameraPosition = targetPosition + Vector3.new(0, cameraHeight, -cameraDistance)
-            camera.CFrame = CFrame.new(cameraPosition, targetPosition)
-        end
-    end
+    while true do
+        local orbFound = false
+        for _, v in pairs(workspace.GameAI.Souls:GetChildren()) do
+            -- Check if the child is named "Orb"
+            if v.Name == "Orb" then
+                -- Ensure the object has a CFrame property (it should be a part or model with a PrimaryPart)
+                if v:IsA("BasePart") or (v:IsA("Model") and v.PrimaryPart) then
+                    -- Teleport the player to the CFrame of the Orb
+                    humanoidRootPart.CFrame = v:IsA("BasePart") and v.CFrame or v.PrimaryPart.CFrame
+                    wait(0.1) -- Small wait to ensure the player is teleported properly
 
-    local function autoPressE()
-        local virtualInputManager = game:GetService("VirtualInputManager")
-        virtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
-        virtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
-    end
-
-    local function fireProximityPromptIfNear()
-        local player = game.Players.LocalPlayer
-        local humanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-
-        if humanoidRootPart then
-            for _, v in pairs(workspace:GetDescendants()) do
-                if v:IsA("ProximityPrompt") then
-                    local part = v.Parent
-                    if part and part:IsA("BasePart") then
-                        -- Check if player CFrame is close enough to the orb
-                        if (humanoidRootPart.Position - part.Position).magnitude < 5 then -- Adjust the threshold as needed
-                            v.HoldDuration = 0
-                            v:Fire()
-                        end
-                    end
-                end
-            end
-        end
-    end
-
-    spawn(function()
-        while _G.AutoOrb do wait()
-                wait(0.1)
-            local player = game.Players.LocalPlayer
-            local humanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-
-            if humanoidRootPart then
-                local orbs = workspace:FindFirstChild("GameAI") and workspace.GameAI:FindFirstChild("Souls")
-                if orbs then
-                    local orbFound = false
-                    for _, v in pairs(orbs:GetChildren()) do
-                        if v:IsA("BasePart") and v.Name == "Orb" then
-                            local targetCFrame = v.CFrame
-                            humanoidRootPart.CFrame = targetCFrame * CFrame.new(0, anchorHeight, 0)
-                            updateCamera(targetCFrame.Position)
-                            orbFound = true
-                            autoPressE()
-                            fireProximityPromptIfNear()
-                            wait(0.1) -- Short wait to handle multiple orbs
-                            break -- Exit loop after processing one orb to reduce delay
+                    -- Check if the player is at the orb's position
+                    if (humanoidRootPart.Position - v.Position).magnitude <= 5 then
+                        -- Fire proximity prompts if near
+                        for _, prompt in pairs(workspace:GetDescendants()) do
+                            if prompt:IsA("ProximityPrompt") then
+                                local part = prompt.Parent
+                                if part and part:IsA("BasePart") and (part.Position - humanoidRootPart.Position).magnitude <= 10 then
+                                    prompt.HoldDuration = 0
+                                    prompt:Fire()
+                                end
+                            end
                         end
                     end
 
-                    if not orbFound then
-                        humanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151) -- Fallback position
-                    end
+                    orbFound = true
+                    break -- Exit loop after processing one orb
                 else
-                    warn("Orbs container not found!")
+                    warn(v.Name .. " does not have a CFrame or PrimaryPart.")
                 end
-            else
-                warn("HumanoidRootPart not found!")
             end
-
-            wait(0.1) -- Reduced wait time to improve responsiveness
         end
-    end)
+
+        if not orbFound then
+            -- Optionally, move to a fallback position if no orbs are found
+            humanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151) -- Fallback position
+        end
+
+        wait(1) -- Adjust wait time between each loop iteration
+    end
 end
 
-local function stopAutoOrbCollection()
-    _G.AutoOrb = false
-end
-
--- Button to Toggle Auto Correct Orb
+-- Button to Start Auto Teleport to Orbs
 AddButton(Main, {
-    Name = "Toggle Auto Correct Orb",
+    Name = "Start Auto Teleport to Orbs",
     Callback = function()
-        if autoOrbActive then
-            stopAutoOrbCollection()
-            autoOrbActive = false
-        else
-            startAutoOrbCollection()
-            autoOrbActive = true
-        end
+        spawn(function()
+            teleportToOrbs()
+        end)
     end
 })
 
