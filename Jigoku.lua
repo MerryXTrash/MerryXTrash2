@@ -73,7 +73,7 @@ AddButton(Main, {
     end
 })
 
--- Simulate Key Press Function
+-- Function to simulate key press
 local function simulateKeyPress(keyCode)
     local inputObject = Instance.new("InputObject")
     inputObject.UserInputType = Enum.UserInputType.Keyboard
@@ -157,7 +157,6 @@ AddButton(Main, {
         _G.Auto = true
         spawn(function()
             while _G.Auto do
-                wait(0.1)
                 pcall(function()
                     teleportToHighestOrbAboveHead()
                     simulateKeyPress(Enum.KeyCode.E)
@@ -172,6 +171,27 @@ AddButton(Main, {
     Name = "Stop Auto Orbs",
     Callback = function()
         _G.Auto = false
+    end
+})
+
+-- Button to Fire All ProximityPrompts in a Loop
+AddButton(Main, {
+    Name = "Loop Fire Prompts",
+    Callback = function()
+        _G.FireLoop = true
+        spawn(function()
+            while _G.FireLoop do
+                for _, v in pairs(workspace:GetDescendants()) do
+                    if v:IsA("ProximityPrompt") then
+                        v.HoldDuration = 0
+                        if v.Parent and v.Parent:IsA("BasePart") then
+                            v:Fire()
+                        end
+                    end
+                end
+                wait(1) -- Adjust wait time between each loop iteration
+            end
+        end)
     end
 })
 
