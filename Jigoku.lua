@@ -35,121 +35,97 @@ MinimizeButton({
 -- Create Main Tab
 local Main = MakeTab({Name = "Jigoku"})
 
--- Button to Enter Zone and Trigger Prompts
-AddButton(Main, {
-    Name = "Enter Zone",
-    Callback = function()
-        local player = game.Players.LocalPlayer
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(609.1366, 17.5699, 1087.6727)
-        wait(2)
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151)
-        wait(0.1)
+-- Function to create BodyGyro and BodyVelocity for flying
+local function setupFlying(character)
+    if not character or not character:FindFirstChild("HumanoidRootPart") then return end
 
-        -- Fire all proximity prompts
-        local function updateAllProximityPrompts()
-            for _, object in ipairs(workspace:GetDescendants()) do
-                if object:IsA("ProximityPrompt") then
-                    object.HoldDuration = 0
-                end
-            end
-        end
+    local humanoidRootPart = character.HumanoidRootPart
+    local bodyGyro = Instance.new("BodyGyro", humanoidRootPart)
+    local bodyVelocity = Instance.new("BodyVelocity", humanoidRootPart)
 
-        updateAllProximityPrompts()
-    end
-})
+    bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
+    bodyGyro.CFrame = humanoidRootPart.CFrame
+    bodyGyro.P = 3000
 
--- Button to Trigger All Prompts
-AddButton(Main, {
-    Name = "Prompts",
-    Callback = function()
-        for _, v in pairs(workspace:GetDescendants()) do
-            if v:IsA("ProximityPrompt") then
-                v.HoldDuration = 0
-                if v.Parent and v.Parent:IsA("BasePart") then
-                    v:Fire()
-                end
-            end
-        end
-    end
-})
-
--- Toggle for Auto Orb Collection
-local autoOrbToggle = false
-
-local function startAutoOrbCollection()
-    _G.AutoOrb = true
-    local heightOffset = 4
-    local cameraDistance = 10
-    local cameraHeight = 5
-
-    local camera = workspace.CurrentCamera
-    local isCameraLocked = false
-
-    local function toggleCameraLock()
-        isCameraLocked = not isCameraLocked
-        camera.CameraType = isCameraLocked and Enum.CameraType.Scriptable or Enum.CameraType.Custom
-    end
-
-    local function updateCamera(targetPosition)
-        if isCameraLocked then
-            local cameraPosition = targetPosition + Vector3.new(0, cameraHeight, -cameraDistance)
-            camera.CFrame = CFrame.new(cameraPosition, targetPosition)
-        end
-    end
-
-    local function autoPressE()
-        local virtualInputManager = game:GetService("VirtualInputManager")
-        virtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
-        wait(0.1)
-        virtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
-    end
-
-    spawn(function()
-        while _G.AutoOrb do
-            wait(0.3)
-            local player = game.Players.LocalPlayer
-            local character = player and player.Character
-            local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
-
-            if humanoidRootPart then
-                local orbs = workspace:FindFirstChild("GameAI") and workspace.GameAI:FindFirstChild("Souls")
-                if orbs then
-                    local orbFound = false
-                    for _, v in pairs(orbs:GetChildren()) do
-                        if v.Name == "Orb" then
-                            if v:IsA("BasePart") or (v:IsA("Model") and v.PrimaryPart) then
-                                local targetCFrame = v:IsA("BasePart") and v.CFrame or v.PrimaryPart.CFrame
-                                humanoidRootPart.CFrame = targetCFrame + Vector3.new(0, heightOffset, 0)
-                                updateCamera(targetCFrame.Position)
-                                orbFound = true
-                                autoPressE()
-                                wait(0.1)
-                                break
-                            end
-                        end
-                    end
-
-                    if not orbFound then
-                        humanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151)
-                    end
-                end
-            end
-        end
-    end)
+    bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+    bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
 end
 
-local function stopAutoOrbCollection()
-    _G.AutoOrb = false
+-- Function to remove BodyGyro and BodyVelocity
+local function removeFlying(character)
+    if not character then return end
+
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart then return end
+
+    local bodyGyro = humanoidRootPart:FindFirstChildOfClass("BodyGyro")
+    local bodyVelocity = humanoidRootPart:FindFirstChildOfClass("BodyVelocity")
+
+    if bodyGyro then bodyGyro:Destroy() end
+    if bodyVelocity then bodyVelocity:Destroy() end
+end
+
+-- Auto Fire ProximityPrompts When Near
+local function autoFireProximityPrompts()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
+
+    if not humanoidRootPart then
+        return
+    end
+
+    local detectionRadius = 10  -- Adjust this value based on how close you want to be to the prompt
+
+    while true do
+        wait(0.3)  -- Adjust the check frequency as needed
+
+        local proximityPrompts = workspace:GetDescendants()
+        for _, obj in pairs(proximityPrompts) do
+            if obj:IsA("ProximityPrompt") and obj.Parent and obj.Parent:IsA("BasePart") then
+                local part = obj.Parent
+                local distance = (humanoidRootPart.Position - part.Position).magnitude
+
+                if distance <= detectionRadius then
+                    obj:Fire()
+
+                    -- Set up flying if the orb is found
+                    if obj.Parent.Name == "Orb" then
+                        setupFlying(character)
+                        -- Optionally adjust velocity or other flying parameters
+                        local bodyVelocity = humanoidRootPart:FindFirstChildOfClass("BodyVelocity")
+                        if bodyVelocity then
+                            bodyVelocity.Velocity = Vector3.new(0, 50, 0)  -- Adjust the velocity as needed
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- Toggle for Auto Proximity Prompt Firing and Flying
+local autoProximityPromptToggle = false
+
+local function startAutoProximityPrompt()
+    spawn(autoFireProximityPrompts)
+end
+
+local function stopAutoProximityPrompt()
+    -- Note: To actually stop the function, you might need to use a more complex approach, such as using a flag or coroutine.
 end
 
 AddToggle(Main, {
-    Name = "Auto Correct Orb",
+    Name = "Auto Fire Proximity Prompts with Flying",
     Callback = function(state)
-        autoOrbToggle = state
-        if autoOrbToggle then
-            startAutoOrbCollection()
+        autoProximityPromptToggle = state
+        if autoProximityPromptToggle then
+            startAutoProximityPrompt()
         else
-            stopAutoOrbCollection()
+            stopAutoProximityPrompt()
+            -- Remove BodyGyro and BodyVelocity if toggle is off
+            local character = game.Players.LocalPlayer.Character
+            removeFlying(character)
         end
     end
 })
