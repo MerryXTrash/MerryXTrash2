@@ -78,7 +78,6 @@ local autoOrbToggle = false
 
 local function startAutoOrbCollection()
     _G.AutoOrb = true
-    local heightOffset = 4
     local cameraDistance = 10
     local cameraHeight = 5
     local anchorHeight = 4 -- Height above the orb to anchor the player
@@ -103,7 +102,6 @@ local function startAutoOrbCollection()
     local function autoPressE()
         local virtualInputManager = game:GetService("VirtualInputManager")
         virtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
-        wait(0.1)
         virtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
     end
 
@@ -129,7 +127,6 @@ local function startAutoOrbCollection()
 
     spawn(function()
         while _G.AutoOrb do
-            wait(0.3) -- Adjust the wait time if needed
             local player = game.Players.LocalPlayer
             local humanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
@@ -145,8 +142,7 @@ local function startAutoOrbCollection()
                             orbFound = true
                             autoPressE()
                             fireProximityPromptsIfNear()
-                            wait(0.1) -- Adjust if needed
-                            break
+                            break -- Exit loop after processing one orb to reduce delay
                         end
                     end
 
@@ -159,6 +155,8 @@ local function startAutoOrbCollection()
             else
                 warn("HumanoidRootPart not found!")
             end
+
+            wait(0.1) -- Reduced wait time to improve responsiveness
         end
     end)
 end
