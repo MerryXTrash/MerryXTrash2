@@ -90,7 +90,7 @@ end
 
 -- Settings for teleportation
 local teleportOffset = Vector3.new(0, 7, 0)  -- Default offset above the orb
-local waitTime = 1  -- Default wait time between teleportations
+local waitTime = 0.1  -- Default wait time between teleportations
 
 -- Function to teleport player to the highest Orb (above its head) and fire ProximityPrompt
 local function teleportToHighestOrbAboveHead()
@@ -157,6 +157,7 @@ AddButton(Main, {
         _G.Auto = true
         spawn(function()
             while _G.Auto do
+                        wait(0.1)
                 pcall(function()
                     teleportToHighestOrbAboveHead()
                     simulateKeyPress(Enum.KeyCode.E)
@@ -189,7 +190,7 @@ AddButton(Main, {
                         end
                     end
                 end
-                wait(1) -- Adjust wait time between each loop iteration
+                wait(0.1) -- Adjust wait time between each loop iteration
             end
         end)
     end
