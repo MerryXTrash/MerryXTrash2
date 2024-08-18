@@ -73,8 +73,8 @@ AddButton(Main, {
     end
 })
 
--- Toggle for Auto Orb Collection
-local autoOrbToggle = false
+-- Variables to manage auto orb collection state
+local autoOrbActive = false
 
 local function startAutoOrbCollection()
     _G.AutoOrb = true
@@ -165,13 +165,16 @@ local function stopAutoOrbCollection()
     _G.AutoOrb = false
 end
 
-AddToggle(Main, {
+-- Button to Toggle Auto Correct Orb
+AddButton(Main, {
     Name = "Auto Correct Orb",
-    Callback = function(state)
-        if state then
-            startAutoOrbCollection()
-        else
+    Callback = function()
+        if autoOrbActive then
             stopAutoOrbCollection()
+            autoOrbActive = false
+        else
+            startAutoOrbCollection()
+            autoOrbActive = true
         end
     end
 })
