@@ -73,8 +73,8 @@ AddButton(Main, {
     end
 })
 
--- Function to teleport player to each Orb and fire ProximityPrompt
-local function teleportToOrbs()
+-- Function to teleport player to the highest Orb and fire ProximityPrompt
+local function teleportToHighestOrb()
     local player = game.Players.LocalPlayer
     local character = player and player.Character
     local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
@@ -84,40 +84,45 @@ local function teleportToOrbs()
         return
     end
 
-    while true do
-        local orbFound = false
+    while _G.Auto do
+        local highestOrb = nil
+        local highestY = -math.huge
+
         for _, v in pairs(workspace.GameAI.Souls:GetChildren()) do
             -- Check if the child is named "Orb"
             if v.Name == "Orb" then
                 -- Ensure the object has a CFrame property (it should be a part or model with a PrimaryPart)
                 if v:IsA("BasePart") or (v:IsA("Model") and v.PrimaryPart) then
-                    -- Teleport the player to the CFrame of the Orb
-                    humanoidRootPart.CFrame = v:IsA("BasePart") and v.CFrame or v.PrimaryPart.CFrame
-                    wait(0.1) -- Small wait to ensure the player is teleported properly
-
-                    -- Check if the player is at the orb's position
-                    if (humanoidRootPart.Position - v.Position).magnitude <= 5 then
-                        -- Fire proximity prompts if near
-                        for _, prompt in pairs(workspace:GetDescendants()) do
-                            if prompt:IsA("ProximityPrompt") then
-                                local part = prompt.Parent
-                                if part and part:IsA("BasePart") and (part.Position - humanoidRootPart.Position).magnitude <= 10 then
-                                    prompt.HoldDuration = 0
-                                    prompt:Fire()
-                                end
-                            end
-                        end
+                    local orbPosition = v:IsA("BasePart") and v.Position or v.PrimaryPart.Position
+                    if orbPosition.Y > highestY then
+                        highestY = orbPosition.Y
+                        highestOrb = v
                     end
-
-                    orbFound = true
-                    break -- Exit loop after processing one orb
                 else
                     warn(v.Name .. " does not have a CFrame or PrimaryPart.")
                 end
             end
         end
 
-        if not orbFound then
+        if highestOrb then
+            -- Teleport the player to the highest Orb
+            humanoidRootPart.CFrame = highestOrb:IsA("BasePart") and highestOrb.CFrame or highestOrb.PrimaryPart.CFrame
+            wait(0.1) -- Small wait to ensure the player is teleported properly
+
+            -- Check if the player is at the orb's position
+            if (humanoidRootPart.Position - highestOrb.Position).magnitude <= 5 then
+                -- Fire proximity prompts if near
+                for _, prompt in pairs(workspace:GetDescendants()) do
+                    if prompt:IsA("ProximityPrompt") then
+                        local part = prompt.Parent
+                        if part and part:IsA("BasePart") and (part.Position - humanoidRootPart.Position).magnitude <= 10 then
+                            prompt.HoldDuration = 0
+                            prompt:Fire()
+                        end
+                    end
+                end
+            end
+        else
             -- Optionally, move to a fallback position if no orbs are found
             humanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151) -- Fallback position
         end
@@ -126,17 +131,22 @@ local function teleportToOrbs()
     end
 end
 
--- Button to Start Auto Teleport to Orbs
+-- Button to Start Auto Teleport to Highest Orbs
 AddButton(Main, {
-    Name = "Auto Orbs",
+    Name = "Auto Highest Orbs",
     Callback = function()
-            _G.Auto = true
-            while _G.Auto do wait()
-                wait(0.2)
+        _G.Auto = true
         spawn(function()
-            teleportToOrbs()
+            teleportToHighestOrb()
         end)
-            end
+    end
+})
+
+-- Button to Stop Auto Teleport to Orbs
+AddButton(Main, {
+    Name = "Stop Auto Orbs",
+    Callback = function()
+        _G.Auto = false
     end
 })
 
