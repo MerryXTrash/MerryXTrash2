@@ -87,15 +87,18 @@ local function autoFireProximityPrompts()
                 local distance = (humanoidRootPart.Position - part.Position).magnitude
 
                 if distance <= detectionRadius then
-                    obj:Fire()
+                    local direction = part.Position - humanoidRootPart.Position
+                    if direction.Y > 0 then  -- Check if the orb is above the player
+                        obj:Fire()
 
-                    -- Set up flying if the orb is found
-                    if obj.Parent.Name == "Orb" then
-                        setupFlying(character)
-                        -- Optionally adjust velocity or other flying parameters
-                        local bodyVelocity = humanoidRootPart:FindFirstChildOfClass("BodyVelocity")
-                        if bodyVelocity then
-                            bodyVelocity.Velocity = Vector3.new(0, 50, 0)  -- Adjust the velocity as needed
+                        -- Set up flying if the orb is found above
+                        if obj.Parent.Name == "Orb" then
+                            setupFlying(character)
+                            -- Optionally adjust velocity or other flying parameters
+                            local bodyVelocity = humanoidRootPart:FindFirstChildOfClass("BodyVelocity")
+                            if bodyVelocity then
+                                bodyVelocity.Velocity = Vector3.new(0, 50, 0)  -- Adjust the velocity as needed
+                            end
                         end
                     end
                 end
