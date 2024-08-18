@@ -90,7 +90,7 @@ end
 
 -- Settings for teleportation
 local teleportOffset = Vector3.new(0, 5, 0)  -- Default offset above the orb
-local waitTime = 0.1  -- Default wait time between teleportations
+local waitTime = 1  -- Default wait time between teleportations
 
 -- Function to teleport player to the highest Orb (above its head) and fire ProximityPrompt
 local function teleportToHighestOrbAboveHead()
@@ -155,11 +155,15 @@ AddButton(Main, {
     Name = "Auto Orbs",
     Callback = function()
         _G.Auto = true
-            while _G.Auto do wait()
+        spawn(function()
+            while _G.Auto do
                 wait(0.1)
+                pcall(function()
                     teleportToHighestOrbAboveHead()
                     game:GetService("VirtualInputManager"):SendKeyEvent(true,Enum.KeyCode.E,false,game)
+                end)
             end
+        end)
     end
 })
 
