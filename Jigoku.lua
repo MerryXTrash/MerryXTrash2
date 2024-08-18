@@ -142,6 +142,7 @@ local function startAutoOrbCollection()
                             orbFound = true
                             autoPressE()
                             fireProximityPromptIfNear()
+                            wait(0.1) -- Short wait to handle multiple orbs
                             break -- Exit loop after processing one orb to reduce delay
                         end
                     end
