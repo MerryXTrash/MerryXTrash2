@@ -157,9 +157,10 @@ AddButton(Main, {
         _G.Auto = true
         spawn(function()
             while _G.Auto do
-                wait(0.2)
+                wait(0.1)
                 pcall(function()
                     teleportToHighestOrbAboveHead()
+                    game:GetService("VirtualInputManager"):SendKeyEvent(true,Enum.KeyCode.E,false,game)
                 end)
             end
         end)
@@ -176,29 +177,6 @@ AddButton(Main, {
 
 -- Create Settings Tab
 local Settings = MakeTab({Name = "Settings"})
-
--- Adjust Teleport Offset
-AddSlider(Settings, {
-    Name = "Teleport Offset Y",
-    Min = 0,
-    Max = 20,
-    Default = 5,
-    Callback = function(value)
-        teleportOffset = Vector3.new(0, value, 0)
-    end
-})
-
--- Adjust Wait Time
-AddSlider(Settings, {
-    Name = "Wait Time",
-    Min = 0.1,
-    Max = 5,
-    Default = 1,
-    Increment = 0.1,
-    Callback = function(value)
-        waitTime = value
-    end
-})
 
 -- Fullbright Feature
 AddButton(Settings, {
