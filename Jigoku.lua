@@ -89,7 +89,7 @@ local function simulateKeyPress(keyCode)
 end
 
 -- Settings for teleportation
-local teleportOffset = Vector3.new(0, 5, 0)  -- Default offset above the orb
+local teleportOffset = Vector3.new(0, 7, 0)  -- Default offset above the orb
 local waitTime = 1  -- Default wait time between teleportations
 
 -- Function to teleport player to the highest Orb (above its head) and fire ProximityPrompt
@@ -160,7 +160,7 @@ AddButton(Main, {
                 wait(0.1)
                 pcall(function()
                     teleportToHighestOrbAboveHead()
-                    game:GetService("VirtualInputManager"):SendKeyEvent(true,Enum.KeyCode.E,false,game)
+                    simulateKeyPress(Enum.KeyCode.E)
                 end)
             end
         end)
