@@ -109,8 +109,7 @@ local function startAutoOrbCollection()
 
     local function fireProximityPromptsIfNear()
         local player = game.Players.LocalPlayer
-        local character = player and player.Character
-        local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
+        local humanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
         if humanoidRootPart then
             for _, v in pairs(workspace:GetDescendants()) do
@@ -118,7 +117,7 @@ local function startAutoOrbCollection()
                     local part = v.Parent
                     if part and part:IsA("BasePart") then
                         local distance = (part.Position - humanoidRootPart.Position).magnitude
-                        if distance <= 10 then -- Adjust the distance threshold as needed
+                        if distance <= 10 then -- Adjust the distance threshold if needed
                             v.HoldDuration = 0
                             v:Fire()
                         end
@@ -132,16 +131,15 @@ local function startAutoOrbCollection()
         while _G.AutoOrb do
             wait(0.3) -- Adjust the wait time if needed
             local player = game.Players.LocalPlayer
-            local character = player and player.Character
-            local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
+            local humanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
             if humanoidRootPart then
                 local orbs = workspace:FindFirstChild("GameAI") and workspace.GameAI:FindFirstChild("Souls")
                 if orbs then
                     local orbFound = false
                     for _, v in pairs(orbs:GetChildren()) do
-                        if v.Name == "Orb" then
-                            local targetCFrame = v:IsA("BasePart") and v.CFrame or v.PrimaryPart.CFrame
+                        if v:IsA("BasePart") and v.Name == "Orb" then
+                            local targetCFrame = v.CFrame
                             humanoidRootPart.CFrame = targetCFrame * CFrame.new(0, anchorHeight, 0)
                             updateCamera(targetCFrame.Position)
                             orbFound = true
@@ -153,7 +151,7 @@ local function startAutoOrbCollection()
                     end
 
                     if not orbFound then
-                        humanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151)
+                        humanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151) -- Fallback position
                     end
                 else
                     warn("Orbs container not found!")
