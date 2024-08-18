@@ -180,8 +180,8 @@ AddButton(Main, {
     Name = "Loop Fire Prompts",
     Callback = function()
         _G.FireLoop = true
-        spawn(function()
             while _G.FireLoop do
+                wait(0.1)
                 for _, v in pairs(workspace:GetDescendants()) do
                     if v:IsA("ProximityPrompt") then
                         v.HoldDuration = 0
@@ -190,9 +190,7 @@ AddButton(Main, {
                         end
                     end
                 end
-                wait(0.1) -- Adjust wait time between each loop iteration
             end
-        end)
     end
 })
 
