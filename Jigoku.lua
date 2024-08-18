@@ -73,8 +73,12 @@ AddButton(Main, {
     end
 })
 
--- Function to teleport player to the highest Orb and fire ProximityPrompt
-local function teleportToHighestOrb()
+-- Settings for teleportation
+local teleportOffset = Vector3.new(0, 5, 0)  -- Default offset above the orb
+local waitTime = 1  -- Default wait time between teleportations
+
+-- Function to teleport player to the highest Orb (above its head) and fire ProximityPrompt
+local function teleportToHighestOrbAboveHead()
     local player = game.Players.LocalPlayer
     local character = player and player.Character
     local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
@@ -105,12 +109,14 @@ local function teleportToHighestOrb()
         end
 
         if highestOrb then
-            -- Teleport the player to the highest Orb
-            humanoidRootPart.CFrame = highestOrb:IsA("BasePart") and highestOrb.CFrame or highestOrb.PrimaryPart.CFrame
+            -- Teleport the player to slightly above the highest Orb's position
+            local orbPosition = highestOrb:IsA("BasePart") and highestOrb.Position or highestOrb.PrimaryPart.Position
+            humanoidRootPart.CFrame = CFrame.new(orbPosition + teleportOffset)
+
             wait(0.1) -- Small wait to ensure the player is teleported properly
 
-            -- Check if the player is at the orb's position
-            if (humanoidRootPart.Position - highestOrb.Position).magnitude <= 5 then
+            -- Check if the player is near the orb's position
+            if (humanoidRootPart.Position - orbPosition).magnitude <= 5 then
                 -- Fire proximity prompts if near
                 for _, prompt in pairs(workspace:GetDescendants()) do
                     if prompt:IsA("ProximityPrompt") then
@@ -127,18 +133,21 @@ local function teleportToHighestOrb()
             humanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151) -- Fallback position
         end
 
-        wait(1) -- Adjust wait time between each loop iteration
+        wait(waitTime) -- Adjust wait time between each loop iteration based on settings
     end
 end
 
--- Button to Start Auto Teleport to Highest Orbs
+-- Button to Start Auto Teleport to Highest Orbs Above Head
 AddButton(Main, {
-    Name = "Auto Highest Orbs",
+    Name = "Auto Orbs",
     Callback = function()
         _G.Auto = true
+            while _G.Auto do wait()
+                wait(0.2)
         spawn(function()
-            teleportToHighestOrb()
+            teleportToHighestOrbAboveHead()
         end)
+            end
     end
 })
 
@@ -152,6 +161,29 @@ AddButton(Main, {
 
 -- Create Settings Tab
 local Settings = MakeTab({Name = "Settings"})
+
+-- Adjust Teleport Offset
+AddSlider(Settings, {
+    Name = "Teleport Offset Y",
+    Min = 0,
+    Max = 20,
+    Default = 5,
+    Callback = function(value)
+        teleportOffset = Vector3.new(0, value, 0)
+    end
+})
+
+-- Adjust Wait Time
+AddSlider(Settings, {
+    Name = "Wait Time",
+    Min = 0.1,
+    Max = 5,
+    Default = 1,
+    Increment = 0.1,
+    Callback = function(value)
+        waitTime = value
+    end
+})
 
 -- Fullbright Feature
 AddButton(Settings, {
