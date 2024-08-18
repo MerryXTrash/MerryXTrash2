@@ -46,18 +46,24 @@ AddButton(Main, {
         wait(0.1)
 
         -- Fire all proximity prompts
-        for _, v in pairs(game:GetService("Workspace"):GetDescendants()) do
-            if v:IsA("ProximityPrompt") then
-                v.HoldDuration = 0 -- Make prompt activate instantly
-                v:Trigger()
-            end
+        local function updateAllProximityPrompts()
+    -- Loop through all objects in the game
+    for _, object in ipairs(workspace:GetDescendants()) do
+        -- Check if the object is a ProximityPrompt
+        if object:IsA("ProximityPrompt") then
+            -- Set HoldDuration to 0
+            object.HoldDuration = 0
         end
     end
+end
+
+-- Call the function to update all ProximityPrompts
+updateAllProximityPrompts()
 })
 
 -- Button to Trigger All Prompts
 AddButton(Main, {
-    Name = "Trigger All Prompts",
+    Name = "Prompts",
     Callback = function()
         for _, v in pairs(game:GetService("Workspace"):GetDescendants()) do
             if v:IsA("ProximityPrompt") then
@@ -74,41 +80,73 @@ AddButton(Main, {
 AddButton(Main, {
     Name = "Auto Correct Orb",
     Callback = function()
-        _G.AutoOrb = true
-        local heightOffset = 4
+        -- LocalScript in StarterPlayerScripts or another client-side location
 
-        while _G.AutoOrb do
-            wait(0.3)
-            local player = game.Players.LocalPlayer
-            local character = player and player.Character
-            local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
+_G.AutoOrb = true
+local heightOffset = 4
+local cameraDistance = 10  -- Adjust these values as needed
+local cameraHeight = 5
 
-            if humanoidRootPart then
-                local orbs = game:GetService("Workspace"):FindFirstChild("GameAI") and game.Workspace.GameAI:FindFirstChild("Souls")
-                if orbs then
-                    local orbFound = false
-                    for _, v in pairs(orbs:GetChildren()) do
-                        if v.Name == "Orb" then
-                            if v:IsA("BasePart") or (v:IsA("Model") and v.PrimaryPart) then
-                                local targetCFrame = v:IsA("BasePart") and v.CFrame or v.PrimaryPart.CFrame
-                                humanoidRootPart.CFrame = targetCFrame + Vector3.new(0, heightOffset, 0)
-                                orbFound = true
-                                wait(0.1)
-                                game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
-                                wait(0.1)
-                                game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.E, false, game)
-                                break
-                            end
-                        end
-                    end
+local camera = workspace.CurrentCamera
+local isCameraLocked = false
 
-                    if not orbFound then
-                        humanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151)
+-- Function to toggle camera lock
+local function toggleCameraLock()
+    isCameraLocked = not isCameraLocked
+    if isCameraLocked then
+        camera.CameraType = Enum.CameraType.Scriptable
+    else
+        camera.CameraType = Enum.CameraType.Custom
+    end
+end
+
+-- Function to update the camera position
+local function updateCamera(targetPosition)
+    if isCameraLocked then
+        local cameraPosition = targetPosition + Vector3.new(0, cameraHeight, -cameraDistance)
+        camera.CFrame = CFrame.new(cameraPosition, targetPosition)
+    end
+end
+
+-- Function to auto-press the "E" key
+local function autoPressE()
+    local virtualInputManager = game:GetService("VirtualInputManager")
+    virtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+    wait(0.1)
+    virtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+end
+
+-- Main loop
+while _G.AutoOrb do
+    wait(0.3)
+    local player = game.Players.LocalPlayer
+    local character = player and player.Character
+    local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
+
+    if humanoidRootPart then
+        local orbs = game:GetService("Workspace"):FindFirstChild("GameAI") and game.Workspace.GameAI:FindFirstChild("Souls")
+        if orbs then
+            local orbFound = false
+            for _, v in pairs(orbs:GetChildren()) do
+                if v.Name == "Orb" then
+                    if v:IsA("BasePart") or (v:IsA("Model") and v.PrimaryPart) then
+                        local targetCFrame = v:IsA("BasePart") and v.CFrame or v.PrimaryPart.CFrame
+                        humanoidRootPart.CFrame = targetCFrame + Vector3.new(0, heightOffset, 0)
+                        updateCamera(targetCFrame.Position)  -- Update camera position
+                        orbFound = true
+                        autoPressE()  -- Auto-press "E" key
+                        wait(0.1)
+                        break
                     end
                 end
             end
+
+            if not orbFound then
+                humanoidRootPart.CFrame = CFrame.new(601.8018, 111.0565, 836.9151)
+            end
         end
     end
+end
 })
 
 -- Create Settings Tab
