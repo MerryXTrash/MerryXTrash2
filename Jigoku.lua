@@ -128,11 +128,15 @@ end
 
 -- Button to Start Auto Teleport to Orbs
 AddButton(Main, {
-    Name = "Start Auto Teleport to Orbs",
+    Name = "Auto Orbs",
     Callback = function()
+            _G.Auto = true
+            while _G.Auto do wait()
+                wait(0.2)
         spawn(function()
             teleportToOrbs()
         end)
+            end
     end
 })
 
