@@ -1,3 +1,52 @@
+local utf8 = {
+	["A"] = 0x41,
+	["B"] = 0x42,
+	["C"] = 0x43,
+	["D"] = 0x44,
+	["E"] = 0x45,
+	["F"] = 0x46,
+	["G"] = 0x47,
+	["H"] = 0x48,
+	["I"] = 0x49,
+	["J"] = 0x4A,
+	["K"] = 0x4B,
+	["L"] = 0x4C,
+	["M"] = 0x4D,
+	["N"] = 0x4E,
+	["O"] = 0x4F,
+	["P"] = 0x50,
+	["Q"] = 0x51,
+	["R"] = 0x52,
+	["S"] = 0x53,
+	["T"] = 0x54,
+	["U"] = 0x55,
+	["V"] = 0x56,
+	["W"] = 0x57,
+	["X"] = 0x58,
+	["Y"] = 0x59,
+	["Z"] = 0x5A,
+}
+
+function pressKey(key, times, delay)
+	key = string.upper(key)
+	for i = 1, tonumber(times) do
+		keypress(utf8[key])
+		wait(delay)
+	end
+end
+function clickMouse(which, times, delay)
+	local clicks = {
+		["1"] = mouse1click,
+		["2"] = mouse2click
+	}
+	local clickfunc = clicks[which]
+	for i = 1, times do
+		clickfunc()
+		wait(delay)
+	end
+end
+
+
 -- Function to set HoldDuration of all ProximityPrompts to 0
 local function setHoldDurationForAllProximityPrompts()
     -- Iterate over all parts and models in the game
