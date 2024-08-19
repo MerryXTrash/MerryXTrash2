@@ -1,3 +1,24 @@
+-- Function to teleport player to the first Butterfly
+local function teleportToFirstButterfly()
+    -- Access the Butterflies model in the Workspace
+    local butterflies = game.Workspace.Butterflies
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+
+    -- Iterate through each child of the Butterflies model
+    for _, v in pairs(butterflies:GetChildren()) do
+        -- Check if the name of the part is "Butterfly"
+        if v.Name == "Butterfly" then
+            -- Teleport the player to the Butterfly's CFrame
+            character.HumanoidRootPart.CFrame = v.CFrame
+            
+            -- Break out of the loop after teleporting to the first Butterfly
+            break
+        end
+    end
+end
+
+
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/UI.lua")))()
 MakeWindow({
   Hub = {
@@ -35,7 +56,11 @@ SetSection(section, "Chapter 4")
 AddButton(Main, {
   Name = "Auto Buttlefly Spirit",
   Callback = function()
-    game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(85.20524597167969, -51.00001525878906, -1415.0792236328125)
+     _G.auto = true
+while _G.auto do wait()
+wait(0.2)
+teleportToFirstButterfly()
+end
   end
 })
 
