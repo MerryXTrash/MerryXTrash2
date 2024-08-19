@@ -1,3 +1,59 @@
+-- Function to find ProximityPrompts within a certain radius around the player
+local function findNearbyProximityPrompts(radius)
+    local nearbyPrompts = {}
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    
+    for _, obj in pairs(game.Workspace:GetDescendants()) do
+        if obj:IsA("ProximityPrompt") then
+            local distance = (humanoidRootPart.Position - obj.Parent.Position).Magnitude
+            if distance <= radius then
+                table.insert(nearbyPrompts, obj)
+            end
+        end
+    end
+
+    return nearbyPrompts
+end
+
+-- Function to fire ProximityPrompts
+local function fireProximityPrompt(Obj, Amount, Skip)
+    if Obj.ClassName == "ProximityPrompt" then
+        local PromptTime = Obj.HoldDuration
+        if Skip then
+            Obj.HoldDuration = 0
+        end
+        for i = 1, Amount do
+            Obj:InputHoldBegin()
+            if not Skip then
+                wait(Obj.HoldDuration)
+            end
+            Obj:InputHoldEnd()
+        end
+        Obj.HoldDuration = PromptTime
+    else
+        error("userdata<ProximityPrompt> expected")
+    end
+end
+
+-- Function to fire all nearby ProximityPrompts
+local function fireNearbyProximityPrompts(radius, Amount, Skip)
+    local prompts = findNearbyProximityPrompts(radius)
+    
+    if #prompts > 0 then
+        for _, prompt in pairs(prompts) do
+            fireProximityPrompt(prompt, Amount, Skip)
+        end
+    else
+        warn("No ProximityPrompt found within the specified radius.")
+    end
+end
+
+-- Run this function to find and fire all ProximityPrompts within a certain radius
+fireNearbyProximityPrompts(10, 1, true)  -- Adjust the parameters as needed
+
+
 -- Function to handle player movement
 function HandlePlayerMovement(player)
     -- Always disable collision for the player to allow no-clip
@@ -50,54 +106,6 @@ UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
         toggleCameraView()
     end
 end)
-
-local utf8 = {
-	["A"] = 0x41,
-	["B"] = 0x42,
-	["C"] = 0x43,
-	["D"] = 0x44,
-	["E"] = 0x45,
-	["F"] = 0x46,
-	["G"] = 0x47,
-	["H"] = 0x48,
-	["I"] = 0x49,
-	["J"] = 0x4A,
-	["K"] = 0x4B,
-	["L"] = 0x4C,
-	["M"] = 0x4D,
-	["N"] = 0x4E,
-	["O"] = 0x4F,
-	["P"] = 0x50,
-	["Q"] = 0x51,
-	["R"] = 0x52,
-	["S"] = 0x53,
-	["T"] = 0x54,
-	["U"] = 0x55,
-	["V"] = 0x56,
-	["W"] = 0x57,
-	["X"] = 0x58,
-	["Y"] = 0x59,
-	["Z"] = 0x5A,
-}
-
-function pressKey(key, times, delay)
-	key = string.upper(key)
-	for i = 1, tonumber(times) do
-		keypress(utf8[key])
-		wait(delay)
-	end
-end
-function clickMouse(which, times, delay)
-	local clicks = {
-		["1"] = mouse1click,
-		["2"] = mouse2click
-	}
-	local clickfunc = clicks[which]
-	for i = 1, times do
-		clickfunc()
-		wait(delay)
-	end
-end
 
 
 -- Function to set HoldDuration of all ProximityPrompts to 0
@@ -199,7 +207,7 @@ while _G.auto do wait()
 wait(0.2)
 isLookingDown = true
 teleportToBesideButterfly()
-pressKey("E", 2, 0.1)
+fireNearbyProximityPrompts(15, 1, true)
 end
   end
 })
