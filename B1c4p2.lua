@@ -91,7 +91,7 @@ local function teleportToBesideButterfly()
     for _, v in pairs(butterflies:GetChildren()) do
         if v:IsA("BasePart") and v.Name == "Butterfly" then
             -- Define the offset (e.g., 5 studs to the right)
-            local offset = Vector3.new(5, 0, 0)
+            local offset = Vector3.new(0, 6, 0)
             
             -- Calculate the new CFrame for the player
             local newCFrame = v.CFrame + offset
@@ -147,6 +147,13 @@ wait(0.2)
 teleportToBesideButterfly()
 pressKey("E", 2, 0.1)
 end
+  end
+})
+
+AddButton(Main, {
+  Name = "Stop Auto Buttlefly Spirit",
+  Callback = function()
+     _G.auto = false
   end
 })
 
