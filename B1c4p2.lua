@@ -63,21 +63,41 @@ end
 setHoldDurationForAllProximityPrompts()
 
 
--- Function to teleport player to the first Butterfly
-local function teleportToFirstButterfly()
-    -- Access the Butterflies model in the Workspace
-    local butterflies = game.Workspace.Butterflies
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
+local function teleportToBesideButterfly()
+    local butterflies = game.Workspace:FindFirstChild("Butterflies")
+    if not butterflies then
+        warn("Butterflies model not found in Workspace.")
+        return
+    end
 
-    -- Iterate through each child of the Butterflies model
+    local player = game.Players.LocalPlayer
+    if not player then
+        warn("LocalPlayer not found.")
+        return
+    end
+
+    local character = player.Character or player.CharacterAdded:Wait()
+    if not character then
+        warn("Character not found.")
+        return
+    end
+
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart then
+        warn("HumanoidRootPart not found in character.")
+        return
+    end
+
     for _, v in pairs(butterflies:GetChildren()) do
-        -- Check if the name of the part is "Butterfly"
-        if v.Name == "Butterfly" then
-            -- Teleport the player to the Butterfly's CFrame
-            character.HumanoidRootPart.CFrame = v.CFrame
+        if v:IsA("BasePart") and v.Name == "Butterfly" then
+            -- Define the offset (e.g., 5 studs to the right)
+            local offset = Vector3.new(5, 0, 0)
             
-            -- Break out of the loop after teleporting to the first Butterfly
+            -- Calculate the new CFrame for the player
+            local newCFrame = v.CFrame + offset
+            
+            -- Teleport the player to the new CFrame
+            humanoidRootPart.CFrame = newCFrame
             break
         end
     end
@@ -124,7 +144,7 @@ AddButton(Main, {
      _G.auto = true
 while _G.auto do wait()
 wait(0.2)
-teleportToFirstButterfly()
+teleportToBesideButterfly()
 pressKey("E", 2, 0.1)
 end
   end
