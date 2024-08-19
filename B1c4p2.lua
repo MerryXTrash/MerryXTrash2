@@ -1,3 +1,20 @@
+-- Function to handle player movement
+function HandlePlayerMovement(player)
+    -- Always disable collision for the player to allow no-clip
+    player:SetCollisionEnabled(false)
+end
+
+-- Hook into the game loop or movement event
+function OnUpdate()
+    local player = GetPlayer()  -- Function to get the current player object
+    if player then
+        HandlePlayerMovement(player)
+    end
+end
+
+-- Register the update handler
+RegisterOnUpdate(OnUpdate)
+
 local player = game.Players.LocalPlayer
 local camera = game.Workspace.CurrentCamera
 local isLookingDown = false
