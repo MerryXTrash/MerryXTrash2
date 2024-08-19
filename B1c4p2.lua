@@ -1,3 +1,34 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/UI.lua"))()
+MakeWindow({
+    Hub = {
+        Title = "Xervice HUB",
+        Animation = "By : Sofia1stCute4 🍉"
+    },
+    Key = {
+        KeySystem = false,
+        Title = "Xervice HUB",
+        Description = "",
+        KeyLink = "https://sub4unlock.io/1kPsC",
+        Keys = {"ImAloneToT"},
+        Notifi = {
+            Notifications = true,
+            CorrectKey = "Key is Correct wait(..)",
+            Incorrectkey = "The key is incorrect",
+            CopyKeyLink = "Copied to Clipboard"
+        }
+    }
+})
+
+MinimizeButton({
+    Image = "rbxassetid://18982309971",
+    Size = {55, 55},
+    Color = Color3.fromRGB(10, 10, 10),
+    Corner = true,
+    Stroke = false,
+    StrokeColor = Color3.fromRGB(255, 0, 0)
+})
+
+
 -- Function to find ProximityPrompts within a certain radius around the player
 local function findNearbyProximityPrompts(radius)
     local nearbyPrompts = {}
@@ -145,37 +176,6 @@ local function teleportToBesideButterfly()
     end
 end
 
--- UI Script (Load UI Elements)
-loadstring(game:HttpGet("https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/UI.lua"))()
-
-MakeWindow({
-    Hub = {
-        Title = "Xervice HUB",
-        Animation = "By : Sofia1stCute4 🍉"
-    },
-    Key = {
-        KeySystem = false,
-        Title = "Xervice HUB",
-        Description = "",
-        KeyLink = "https://sub4unlock.io/1kPsC",
-        Keys = {"ImAloneToT"},
-        Notifi = {
-            Notifications = true,
-            CorrectKey = "Key is Correct wait(..)",
-            Incorrectkey = "The key is incorrect",
-            CopyKeyLink = "Copied to Clipboard"
-        }
-    }
-})
-
-MinimizeButton({
-    Image = "rbxassetid://18982309971",
-    Size = {55, 55},
-    Color = Color3.fromRGB(10, 10, 10),
-    Corner = true,
-    Stroke = false,
-    StrokeColor = Color3.fromRGB(255, 0, 0)
-})
 
 local MainTab = MakeTab({Name = "Book 1"})
 
