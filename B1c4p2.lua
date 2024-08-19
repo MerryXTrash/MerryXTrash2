@@ -1,3 +1,39 @@
+local player = game.Players.LocalPlayer
+local camera = game.Workspace.CurrentCamera
+local isLookingDown = false
+
+-- Function to make the camera look down
+local function lookDown()
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    camera.CFrame = CFrame.new(camera.CFrame.Position, humanoidRootPart.Position - Vector3.new(0, 1, 0))
+end
+
+-- Function to reset the camera to its default view
+local function resetCamera()
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    camera.CFrame = CFrame.new(camera.CFrame.Position, humanoidRootPart.Position)
+end
+
+-- Function to toggle between looking down and normal view
+local function toggleCameraView()
+    if isLookingDown then
+        resetCamera()
+    else
+        lookDown()
+    end
+    isLookingDown = not isLookingDown
+end
+
+-- Bind the toggle function to a key press (e.g., "L")
+local UserInputService = game:GetService("UserInputService")
+UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
+    if not gameProcessedEvent and input.KeyCode == Enum.KeyCode.L then
+        toggleCameraView()
+    end
+end)
+
 -- Function to enable noclip for all parts in Workspace
 local function enableNoclipForAllParts()
     local Workspace = game:GetService("Workspace")
@@ -159,6 +195,7 @@ AddButton(Main, {
      _G.auto = true
 while _G.auto do wait()
 wait(0.2)
+isLookingDown = true
 teleportToBesideButterfly()
 pressKey("E", 2, 0.1)
 end
@@ -169,6 +206,7 @@ AddButton(Main, {
   Name = "Stop Auto Buttlefly Spirit",
   Callback = function()
      _G.auto = false
+     isLookingDown = false
   end
 })
 
