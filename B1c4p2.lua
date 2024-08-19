@@ -186,9 +186,8 @@ AddButton(MainTab, {
     Name = "Auto Butterfly Spirit",
     Callback = function()
         _G.auto = true
-        while _G.auto do
+        while _G.auto do wait()
             wait(0.2)
-            isLookingDown = true
             teleportToBesideButterfly()
             fireNearbyProximityPrompts(15, 1, true)
         end
@@ -199,7 +198,6 @@ AddButton(MainTab, {
     Name = "Stop Auto Butterfly Spirit",
     Callback = function()
         _G.auto = false
-        isLookingDown = false
     end
 })
 
