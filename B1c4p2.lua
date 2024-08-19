@@ -1,3 +1,19 @@
+-- Function to set HoldDuration of all ProximityPrompts to 0
+local function setHoldDurationForAllProximityPrompts()
+    -- Iterate over all parts and models in the game
+    for _, instance in pairs(workspace:GetDescendants()) do
+        -- Check if the instance is a ProximityPrompt
+        if instance:IsA("ProximityPrompt") then
+            -- Set the HoldDuration to 0
+            instance.HoldDuration = 0
+        end
+    end
+end
+
+-- Call the function to update ProximityPrompts
+setHoldDurationForAllProximityPrompts()
+
+
 -- Function to teleport player to the first Butterfly
 local function teleportToFirstButterfly()
     -- Access the Butterflies model in the Workspace
