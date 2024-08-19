@@ -34,21 +34,6 @@ UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
     end
 end)
 
--- Function to enable noclip for all parts in Workspace
-local function enableNoclipForAllParts()
-    local Workspace = game:GetService("Workspace")
-
-    -- Iterate over all parts in Workspace
-    for _, part in pairs(Workspace:GetDescendants()) do
-        if part:IsA("BasePart") then
-            part.CanCollide = false  -- Disable collision for the part
-        end
-    end
-end
-
--- Call the function to apply noclip to all parts
-enableNoclipForAllParts()
-
 local utf8 = {
 	["A"] = 0x41,
 	["B"] = 0x42,
