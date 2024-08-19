@@ -15,7 +15,6 @@ local games = {
 	[7068737459] = '', --lobby 2
 	[7068738088 and 7068951438] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/TwT.lua', --TwT1
 	[7068951914 and 7068951914] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/TwT2.lua', --TwT2
-	[7068740106 and 7068952294] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/TwT3.lua',--TwT3
 	[15989427413] = '', --lobby
 	[15996404472] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/cs1.lua', --1.1
 	[15996407335] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/cs2.lua', --1.2
@@ -25,8 +24,10 @@ local games = {
 	[15996414738] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/cs6.lua', --3.1
 	[15996416081] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/cs7.lua', --3.2
 	[15996417416] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/cs8.lua', --3.3
-	[7068740106 and 7068952294] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/TwT3.lua',
-	[15996417416] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/cs8.lua'
+	[7068740106 and 7068952294] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/TwT3.lua',--TwT3
+	[7618863566] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/Jigoku.lua',--jigoku
+	[7251865082] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/B1c4p1.lua',--4.1
+	[7251866503] = 'https://raw.githubusercontent.com/MerryXTrash/MerryXTrash2/main/Jigoku.lua'--4.2
 }
 
 local currentPlaceId = game.PlaceId
