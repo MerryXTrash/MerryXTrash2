@@ -125,6 +125,7 @@ AddButton(Main, {
 while _G.auto do wait()
 wait(0.2)
 teleportToFirstButterfly()
+pressKey("E", 2, 0.1)
 end
   end
 })
