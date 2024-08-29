@@ -38,7 +38,7 @@ AddButton(Main, {
         local TeleportService = game:GetService("TeleportService")
         local Players = game:GetService("Players")
         local LocalPlayer = Players.LocalPlayer
-        local newPlaceId = 123456789 -- Replace this with the new Place ID you want to teleport to
+        local newPlaceId = 7618863566 -- Replace this with the new Place ID you want to teleport to
 
         local function teleportToNewPlace()
             local success, errorMessage = pcall(function()
