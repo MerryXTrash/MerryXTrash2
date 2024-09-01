@@ -1,1 +1,29 @@
+local Library = loadstring(game:HttpGet("https://pst.innomi.net/paste/cjayku54donghnc33mkjdff3/raw"))()
 
+local Window = Library:CreateWindow({
+    Credit = "Punfevpu",
+    BackgroundColor = Color3.fromRGB(0, 0, 0)  -- Set background to black
+})
+
+local Page1 = Window:AddPage({
+	Title = "Main",
+	Icon = "home",
+	Page = {
+		Left = {
+			Name = "General",
+			Icon = "arrow-big-up"
+		},
+		Right = {
+			Name = "Setting",
+			Icon = "file-cog"
+		}
+	}
+})
+
+Page1:CreateButton("r",{
+	Title = "Teleport",
+	Desc = "",
+	Secure = true,
+	Callback = function()
+		TP(workspace:WaitForChild("Location").SpawnLocations[SelectIsland].CFrame)
+	end})
