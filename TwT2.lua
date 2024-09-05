@@ -42,8 +42,8 @@ do
     })
 
     Tabs.General:AddParagraph({
-        Title = "Book 1",
-        Content = "Chapter 3"
+        Title = "Gamemode",
+        Content = "The Witch Trial"
     })
 
     Tabs.General:AddButton({
