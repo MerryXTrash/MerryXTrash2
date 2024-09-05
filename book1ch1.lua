@@ -57,7 +57,7 @@ do
                     {
                         Title = "Yes",
                         Callback = function()
-                            game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(310.15985107421875, 3.2333197593688965, 320.0658874511719)
+                            game.Players.localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(3507.028564453125, 43.13663864135742, -1541.9735107421875)
                         end
                     },
                     {
