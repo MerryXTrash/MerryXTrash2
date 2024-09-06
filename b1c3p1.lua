@@ -1,7 +1,40 @@
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local Show = loadstring(game:HttpGet("https://raw.githubusercontent.com/MerryXTrash/Vscose/main/Toggle.lua"))()
-local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/MerryXTrash/Vscose/main/LoadongESP.lua"))()
+
+-- สร้างโฟลเดอร์ใน Workspace
+local folder = Instance.new("Folder")
+folder.Name = "HighlightsFolder"
+folder.Parent = game.Workspace
+
+-- สร้าง Highlight แม่แบบ
+local highlightTemplate = Instance.new("Highlight")
+highlightTemplate.Name = "HighlightTemplate"
+highlightTemplate.Enabled = true
+highlightTemplate.FillTransparency = 0.5
+highlightTemplate.OutlineTransparency = 0
+highlightTemplate.Parent = folder
+
+-- ฟังก์ชันในการตั้งค่า Highlight สำหรับ Mob
+local function setupHighlightForMob(mob)
+    local mobHighlight = highlightTemplate:Clone()
+    mobHighlight.Name = "MobESP"
+    mobHighlight.FillColor = Color3.fromRGB(255, 0, 0)
+    mobHighlight.FillTransparency = 0.8
+    mobHighlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+    mobHighlight.Parent = mob
+end
+
+-- ฟังก์ชันในการตั้งค่า Highlight สำหรับ Player
+local function setupHighlightForPlayer(player)
+    local character = player.Character or player.CharacterAdded:Wait()
+    local playerHighlight = highlightTemplate:Clone()
+    playerHighlight.Name = "PlayerESP"
+    playerHighlight.FillColor = Color3.fromRGB(0, 0, 255)
+    playerHighlight.FillTransparency = 0.5
+    playerHighlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+    playerHighlight.Parent = character
+end
 
 local Window = Fluent:CreateWindow({
     Title = "The Mimic | Book 1 Chapter 3",
