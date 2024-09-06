@@ -71,6 +71,35 @@ do
         end
     })
 
+        Tabs.ESP:AddButton({
+        Title = "Monster ESP",
+        Description = "Show Monster ESP",
+        Callback = function()
+            Window:Dialog({
+                Title = "Monster ESP",
+                Content = "Do you want to show monster esp?",
+                Buttons = {
+                    {
+                        Title = "Yes",
+                        Callback = function()
+                            for i,v in pairs(game:GetService("Workspace").GameAI:Getdescendandt()) do
+    if Is:A("Model") then
+        setupHighlightForMob(v)
+    end
+end 
+                        end
+                    },
+                    {
+                        Title = "No",
+                        Callback = function()
+                            print("Dialog cancelled.")
+                        end
+                    }
+                }
+            })
+        end
+    })
+
     Tabs.Misc:AddButton({
         Title = "Fullbright",
         Description = "If you're scared of the dark",
